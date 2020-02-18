@@ -32,7 +32,7 @@ if (RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
            
 }
 
-  function executeObjectCmd(object, pos) {
+  function executeObjectCmd(object, pos = 1) {
             //Function to execute the scripted command for the object. Object is the object command name. Pos is the position of the script.
             
             eval(RoomObjects[OBJECTGLOBAL][object][pos]);
@@ -42,7 +42,7 @@ if (RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
 function changeObjectValue(object, field, value, pos = 1){
             //Changes the value of a field for an object. EG: Description, amounts, etc... Object is the room, character, etc.. Field is the field to change and value is what it is changing too. Pos is the position in the array. Default is always 1.
             
-            RoomObjects[room][field][1] = value;
+            RoomObjects[room][field][pos] = value;
                         
         }
 
