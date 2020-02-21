@@ -79,6 +79,12 @@ function processcommand(command) {
         godown();
     }
     
+    //The final else. If all else fails, parse the command that was given.
+    else {
+        
+        ParsePlayerInput(IGNOREWORDS, DELIMETERWORDS, command)
+        
+    }
 }
 
 </script>
