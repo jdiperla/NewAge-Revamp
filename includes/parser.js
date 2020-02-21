@@ -11,42 +11,56 @@ Next comes the primary object the command is being performed on, Eg: Shiny_Lamp 
 eg: Look at the shiny lamp returns: look;shiny_lamp:. If the object interacts with further objects, this will be added after the colon and
 separated by comma's. EG: Look at the Shiny Lamp on the black table with the drawer  - will become: look;shiny_lamp:black_table,drawer*/
 
-function ParsePlayerInput(myActionArray, myIgnoredWords, delimeterWords, consoleString) {
+ParsePlayerInput('the,At,On', 'on,with,and', 'Talk at the Shiny Lamp')
+     function ParsePlayerInput(myIgnoredWords, delimeterWords, consoleString) {
 
 //create array for delimeterWords and ignored words
 var coldelwords = new Array();
 var coligwords = new Array();
 
 //make all input lowercase so all cases match
-	var myStringArray = myActionArray;
-		myStringArray = myStringArray.toLowerCase();
-		myStringArray = myStringArray.split(",");
 		var myUselessWords = myIgnoredWords;
 	
-		myUselessWords = myUselessWords.toLowerCase();
-		myUselessWords = myUselessWords.split(",");
+			myUselessWords = myUselessWords.toLowerCase();
+			myUselessWords = myUselessWords.split(",");
 	
 		var consoleString = consoleString;
-		consoleString = consoleString.toLowerCase();
-	
-		var tokens = consoleString.trim().split(' ');
+			consoleString = consoleString.toLowerCase();
+	    var phrasedirect = '';
+	    var onewordcmd = consoleString.split(' ').slice(0,1).join('');
+        var twowordcmd = consoleString.split(' ').slice(0,2).join('');
+        var threewordcmd = consoleString.split(' ').slice(0,3).join('');
+		
 		var textcmd = '';
 		var firstObj = '';
 
-//find the first word of the input, which will be the command word
-			for (var i = 0; i < myStringArray.length; i++) {
-   			//When it picks a particular word up it will save it.
-				if(myStringArray[i] === tokens[0])
-					{
-						textcmd = tokens[0];
-					}
+//Find the command
+	for( let syn in synonyms ){
+    if (syn == onewordcmd){
+        textcmd = synonyms[syn][0];
+        phrasedirect = syn;
+        break;
+    
+} else if (syn == twowordcmd){
+        textcmd = synonyms[syn][0];
+        phrasedirect = syn;
+        break;
+        
+} else if (syn == threewordcmd){
+        textcmd = synonyms[syn][0];
+        phrasedirect = syn;
+        break;	
+} else {
+	textcmd = CMDERROR;
+
+}
 									}
 //
 
 if(textcmd)
 {
 //this removes the command word "textcmd" from the input string
-consoleString = consoleString.replace(textcmd, "");
+consoleString = consoleString.replace(phrasedirect, "");
 
 }
 
@@ -84,9 +98,17 @@ consoleString = replaceAll(consoleString, " ", "_");
 
 firstObj = consoleString.split(",", 2);
 
-consoleString = replaceAll(consoleString, firstObj[0] +",", "");
-
-return textcmd + ";" + firstObj[0] + ":" + consoleString.trim();
+if (texcmd = CMDERROR) {
+   
+	CMDRUNNERROR(); //displays the default error message if the command is not found
+	
+}
+else {
+	
+eval GameObject[firstObj[0]][textcmd]; //Runs the command from the Parser.
+	
+}
+//Deprecated again: return textcmd + ";" + firstObj[0] + ":" + consoleString.trim();
 
       //Deprecated: return textcmd + "_" + firstObj[0] + "('" + consoleString.trim() + "','" + coldelwords + "','" + coligwords + "')";
 
