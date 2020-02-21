@@ -4,13 +4,13 @@ function LoadRoom(roomname) {
     
            OBJECTGLOBAL = roomname;
           
-           if (RoomObjects[OBJECTGLOBAL][OBJECTMOVIE][1] != ''){
+           if (GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] != ''){
  
-           document.getElementById("StartRoomLoad").innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay>' + '<source src="' + RoomObjects[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';
-           } else if (RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
-           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' display='none' width='" + RoomObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + RoomObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+           document.getElementById("StartRoomLoad").innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay>' + '<source src="' + GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';
+           } else if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' display='none' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
            }
-                    document.getElementById("StartRoomText").innerHTML = RoomObjects[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1];
+                    document.getElementById("StartRoomText").innerHTML = GameObjects[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1];
                  
                  
                  
@@ -25,8 +25,8 @@ function hidevideo(roomname) {
 
     x.style.display = "none";
 
-if (RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
-           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' display='none' width='" + RoomObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + RoomObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' display='none' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
            }
            
 }
@@ -34,14 +34,14 @@ if (RoomObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
   function executeObjectCmd(object, pos = 1) {
             //Function to execute the scripted command for the object. Object is the object command name. Pos is the position of the script.
             
-            eval(RoomObjects[OBJECTGLOBAL][object][pos]);
+            eval(GameObjects[OBJECTGLOBAL][object][pos]);
             
         }
 
 function changeObjectValue(object, field, value, pos = 1){
             //Changes the value of a field for an object. EG: Description, amounts, etc... Object is the room, character, etc.. Field is the field to change and value is what it is changing too. Pos is the position in the array. Default is always 1.
             
-            RoomObjects[room][field][pos] = value;
+            GameObjects[room][field][pos] = value;
                         
         }
 
