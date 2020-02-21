@@ -3,72 +3,78 @@
 function processcommand(command) {
     
     let EAST = GAMEEAST.includes(command);
-     
+    let WEST = GAMEWEST.includes(command);
+    let SOUTH = GAMESOUTH.includes(command);
+    let NORTH = GAMENORTH.includes(command);
+    let NORTHEAST = GAMENORTHEAST.includes(command);
+    let SOUTHEAST = GAMESOUTHEAST.includes(command);
+    let SOUTHWEST = GAMESOUTHWEST.includes(command);  
+    let NORTHWEST = GAMENORTHWEST.includes(command);
+    let UP = GAMEUP.includes(command);
+    let DOWN = GAMEDOWN.includes(command);
+    
     if(EAST = true){
         
         goeast();
     }
     
-    let WEST = GAMEWEST.includes(command);
-     
-    if(WEST = true){
+    else if(WEST = true){
         
         gowest();
     }
     
-    let SOUTH = GAMESOUTH.includes(command);
-     
-    if(SOUTH = true){
+   
+     else if(SOUTH = true){
         
         gosouth();
     }
     
-    let NORTH = GAMENORTH.includes(command);
+    
      
-    if(NORTH = true){
+   else if(NORTH = true){
         
         gonorth();
     }
     
-    let NORTHEAST = GAMENORTHEAST.includes(command);
+    
      
-    if(NORTHEAST = true){
+   else if(NORTHEAST = true){
         
         gonortheast();
     }
     
-    let SOUTHEAST = GAMESOUTHEAST.includes(command);
+    
      
-    if(SOUTHEAST = true){
+   else if(SOUTHEAST = true){
         
         gosoutheast();
     }
     
-    let SOUTHWEST = GAMESOUTHWEST.includes(command);
+   
      
-    if(SOUTHWEST = true){
+    else if(SOUTHWEST = true){
         
         gosouthwest();
     }
     
-    let NORTHWEST = GAMENORTHWEST.includes(command);
+    
      
-    if(NORTHWEST = true){
+    else if(NORTHWEST = true){
         
         gonorthwest();
     }
     
     
-   let UP = GAMEUP.includes(command);
+   
      
-    if(UP = true){
+   else if(UP = true){
         
         goup();
     }
     
-    let DOWN = GAMEDOWN.includes(command);
+ 
      
-    if(DOWN = true){
+   else if(DOWN = true){
         
         godown();
     }
