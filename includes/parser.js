@@ -11,7 +11,8 @@ Next comes the primary object the command is being performed on, Eg: Shiny_Lamp 
 eg: Look at the shiny lamp returns: look;shiny_lamp:. If the object interacts with further objects, this will be added after the colon and
 separated by comma's. EG: Look at the Shiny Lamp on the black table with the drawer  - will become: look;shiny_lamp:black_table,drawer*/
 
-ParsePlayerInput('the,At,On', 'on,with,and', 'Talk at the Shiny Lamp')
+//Example: ParsePlayerInput('the,At,On', 'on,with,and', 'Talk at the Shiny Lamp')
+	
      function ParsePlayerInput(myIgnoredWords, delimeterWords, consoleString) {
 
 //create array for delimeterWords and ignored words
