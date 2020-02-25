@@ -106,7 +106,9 @@ if (texcmd = CMDERROR) {
 }
 else {
 	
-eval GameObject[firstObj[0]][textcmd]; //Runs the command from the Parser.
+	eval firstObj[0] + "_" + textcmd + "()"; //eg: desk_look
+	
+//Deprecated: eval GameObject[firstObj[0]][textcmd]; //Runs the command from the Parser.
 	
 }
 //Deprecated again: return textcmd + ";" + firstObj[0] + ":" + consoleString.trim();
