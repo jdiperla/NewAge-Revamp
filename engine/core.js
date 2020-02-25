@@ -34,7 +34,7 @@ if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
   function executeObjectCmd(object, pos = 1) {
             //Function to execute the scripted command for the object. Object is the object command name. Pos is the position of the script.
             
-            eval(GameObjects[OBJECTGLOBAL][object][pos]);
+            eval(GameObjectsCommands[OBJECTGLOBAL][object][pos]);
             
         }
 
