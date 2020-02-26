@@ -1,7 +1,7 @@
 <script>
 var DIRECTION = '';
 var DIRECTIONBLOCK = '';
-var DIRECTIONVLOCKDESC = '';
+var DIRECTIONBLOCKDESC = '';
 
 function iterateCmds(command) {
 //This command separates commands based on a set of words that can be used as delimiters and then runs each set of commands one after the other.
