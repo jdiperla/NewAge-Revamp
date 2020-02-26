@@ -3,6 +3,33 @@ var DIRECTION = '';
 var DIRECTIONBLOCK = '';
 var DIRECTIONVLOCKDESC = '';
 
+function iterateCmds(command) {
+//This command separates commands based on a set of words that can be used as delimiters and then runs each set of commands one after the other.
+//EG: Put the water in the pot. Then Put the pot on the stove. Turn the stove on. 
+//This still needs work though as some of these delimiter words can be used for other things besides delimiting a sentence.
+    
+    command = command.toLowerCase();
+    replaceAll(command, 'and', '||');
+    replaceAll(command, 'and also', '||');
+    replaceAll(command, 'and then', '||');
+    replaceAll(command, 'then also', '||');
+    replaceAll(command, 'then', '||');
+    replaceAll(command, 'also', '||');
+    replaceAll(command, '.', '||');
+    
+    cmdsplit = command.split("||");
+    
+    for (i = 0; i < cmdsplit.length; i++) {
+            
+                processcommand(cmdsplit[i]);
+        
+        }
+
+
+}
+
+
+
 function processcommand(command) {
     
     let EAST = GAMEEAST.includes(command);
