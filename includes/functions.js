@@ -13,4 +13,17 @@ function cmdNoExit() {
   return globalmsg['noexit'][rndExitMsgRst]);
 }
 
+function scrnDisplay($text2dis) {
+ //Function that writes to the screen. 
+  
+  roomText = document.getElementById("StartRoomText");
+  
+  if (GLOBALSETCLS = true) {
+   //if globally set to clear the screen for every new text inputted. 
+    roomText.innerHTML = $text2dis;
+  } 
+  else {
+    roomText.innerHTML += $text2dis;
+  }
+}
 <script>
