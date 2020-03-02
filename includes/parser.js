@@ -106,7 +106,18 @@ if (texcmd = CMDERROR) {
 }
 else {
 	
-	eval firstObj[0] + "_" + textcmd + "()"; //eg: desk_look
+	var executeParse = firstObj[0] + "_" + textcmd; //eg: desk_look
+	
+	if (typeof window[executeParse] == 'function') { 
+  		
+		executeParse = executeParse  + "()";
+		eval(executeParse);
+		
+} else {
+	
+	errMsg('nocmd');
+	
+}
 	
 //Deprecated: eval GameObject[firstObj[0]][textcmd]; //Runs the command from the Parser.
 	
