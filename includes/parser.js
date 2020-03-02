@@ -52,6 +52,7 @@ var coligwords = new Array();
         phrasedirect = syn;
         break;	
 } else {
+	
 	textcmd = CMDERROR;
 
 }
@@ -101,7 +102,7 @@ firstObj = consoleString.split(",", 2);
 
 if (texcmd = CMDERROR) {
    
-	CMDRUNNERROR(); //displays the default error message if the command is not found
+	errMsg('nocmd'); //if No synonym or command is found in the synonym list, it will throw an error. Otherwise will continue processing
 	
 }
 else {
@@ -109,7 +110,8 @@ else {
 	var executeParse = firstObj[0] + "_" + textcmd; //eg: desk_look
 	
 	if (typeof window[executeParse] === 'function') { 
-  		
+  		//if no command was defined in the code, it will throw an error and run one of the customized error messages
+		
 		executeParse = executeParse  + "()";
 		eval(executeParse);
 		
