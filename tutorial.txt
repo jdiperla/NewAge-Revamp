@@ -1,0 +1,16 @@
+Initial Tutorial
+
+
+More will need be documented. However, starting a simple game is not hard at all. As of this writing, support for inventory 
+needs to be added. 
+
+Your main index.html: 
+Any Div that has an id of "StartRoomLoad" will be where the room image or movie will be displayed.
+"StartRoomText" is the div id of where the text will be displayed. 
+Make sure to include all JS files in your script tag.
+
+Your input or label or textbox needs to run the javascript function: iterateCmds(value that was typed in) . The Parser will
+then take care of the rest. 
+
+A function is created for an item if you use the main item name followed by an underscore and the command. For example, 
+someone typing: "Look at the Dog" will have a function named dog_look() called.
