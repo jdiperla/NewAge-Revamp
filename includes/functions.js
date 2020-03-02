@@ -8,9 +8,9 @@ function replaceAll(str, find, replace) {
 function errMsg(errorglobal) {
  //Whenever the player wants to go in a direction that does not exist at the current location, the exit message will throw out a random
  //exit message from the global list.
-  rndExitMsgLngth = globalmsg[errorglobal].length;
-  rndExitMsgRst = Math.floor(Math.random() * rndExitMsgLngth);
-  return globalmsg['noexit'][rndExitMsgRst]);
+  rndMsgLngth = globalmsg[errorglobal].length;
+  rndMsgRst = Math.floor(Math.random() * rndMsgLngth);
+  return globalmsg[errorglobal][rndMsgRst]);
 }
 
 function scrnDisplay($text2dis) {
