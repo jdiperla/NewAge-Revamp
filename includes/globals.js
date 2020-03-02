@@ -4,6 +4,7 @@ var GAMENAME = '';
 var OBJECTGLOBAL = '';  //Indicates the current OBJECT loaded.
 var GAMECURPLAYER = ''; //Indicates the current player you control.
 var GAMESCORE = '0';
+var GLOBALSETCLS = false;
 var GAMEEAST = ['e', 'east', 'go e', 'go east', 'head east', 'head e', 'explore east', 'explore e', 'go eastbound', 'head eastbound', 'go east bound', 'head east bound', 'travel e', 'travel east'];
 var GAMEWEST = ['w', 'west', 'go w', 'go west', 'head west', 'head w', 'explore west', 'explore w', 'go westbound', 'head westbound', 'go west bound', 'head west bound', 'travel w', 'travel west'];
 var GAMESOUTH = ['s', 'south', 'go s', 'go south', 'head south', 'head s', 'explore south', 'explore s', 'go southbound', 'head southbound', 'go south bound', 'head south bound', 'travel s', 'travel south'];
