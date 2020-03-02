@@ -14,3 +14,38 @@ then take care of the rest.
 
 A function is created for an item if you use the main item name followed by an underscore and the command. For example, 
 someone typing: "Look at the Dog" will have a function named dog_look() called.
+
+A game object structure can contain multiple objects such as rooms, characters or items/objects. An object structure can be written like this and included in its own Javascript file(Make sure to add this to includes):
+
+var GameObjects = {
+    'name id of your room all one word, no spaces': [
+      ['RoomName', 'Name of your room, written however you want'],
+      ['Id', '1 - You define this and can leave it blank. This is for future functionality'],
+      ['ObjectType', 'Room, Item, Character'],
+      ['RoomDesc', 'Your room Description'],  
+      ['RoomShortDesc', 'Your room short Description'], 
+      ['XRes', '320 size of image or movie'],
+      ['YRes', '240'],
+      ['RmImg', 'http://selmiak.bplaced.net/games/c64/zak/room/74_intro_00_256.png'],
+      ['e', 'room1'],
+      ['w', 'room1'],
+      ['n', 'room1'],
+      ['s', 'room1'],
+      ['u', 'room1'],
+      ['d', 'room1']
+      
+    ],
+    'room1': [
+      ['RoomName', 'Title Screen'],
+      ['RoomDesc', 'Your first room Desc'],
+      ['Id', '1'],
+      ['XRes', '320'],
+      ['YRes', '240'],
+      ['RmImg', 'http://selmiak.bplaced.net/games/c64/zak/room/74_intro_00_256.png'];
+      ['w', 'titlescreen'],
+      ['w', 'room1'],
+      ['n', 'room1'],
+      ['s', 'room1'],
+      ['u', 'room1'],
+      ['d', 'room1']
+      ]
