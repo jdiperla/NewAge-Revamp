@@ -108,7 +108,7 @@ else {
 	
 	var executeParse = firstObj[0] + "_" + textcmd; //eg: desk_look
 	
-	if (typeof window[executeParse] == 'function') { 
+	if (typeof window[executeParse] === 'function') { 
   		
 		executeParse = executeParse  + "()";
 		eval(executeParse);
