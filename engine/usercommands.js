@@ -155,7 +155,7 @@ function performTravel() {
 
 if (GameObjectTravel[OBJECTGLOBAL][DIRECTIONB][1] = '') {
     
-        cmdNoExit();
+        errMsg('noexit');
 
 }
      
