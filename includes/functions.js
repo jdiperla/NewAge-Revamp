@@ -26,4 +26,18 @@ function scrnDisplay($text2dis) {
     roomText.innerHTML += $text2dis;
   }
 }
+
+function findBetween(text, firststring, secondstring){
+  //Function to text between two strings.
+    var firstvariable = firststring;
+    var secondvariable = secondstring;
+    var text = text;   
+   
+          var regExString = new RegExp("(?:"+firstvariable+")((.[\\s\\S]*))(?:"+secondvariable+")", "ig"); //set ig flag for global search and case insensitive
+
+              var strResult = regExString.exec(text);
+  
+  return strResult[1];
+  
+}
 <script>
