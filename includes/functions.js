@@ -59,5 +59,17 @@ function strDelimiter(text, delimiter, pos){
   
 }
 
+function rtnStringInstances(string, searchinstance) {
+//returns the number of times the search appears in the string.
+  
+eval("var regex = /" + searchinstance + "/gi, result, indices = [];");
+while ( (result = regex.exec(string)) ) {
+    indices.push(result);
+    
+}
+
+return indices.length;
+  
+}
 
 <script>
