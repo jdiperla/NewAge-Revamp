@@ -40,4 +40,24 @@ function findBetween(text, firststring, secondstring){
   return strResult[1];
   
 }
+
+function strDelimiterCnt(text, delimiter){
+ //Function to enter a string and divide it using a delimiter and return the count
+  var textsep = text;
+         textsep.split(delimiter);
+  
+  return textsep.length;
+  
+}
+
+function strDelimiter(text, delimiter, pos){
+ //Function to enter a string and divide it using a delimiter and return the string at the split position
+  var textsep = text;
+         textsep.split(delimiter);
+  
+  return textsep[pos];
+  
+}
+
+
 <script>
