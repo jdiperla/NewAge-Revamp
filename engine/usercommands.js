@@ -16,6 +16,7 @@ function iterateCmds(command) {
     replaceAll(command, 'then', '||');
     replaceAll(command, 'also', '||');
     replaceAll(command, '.', '||');
+    replaceAll(command, '. then', '||');
     
     cmdsplit = command.split("||");
     
