@@ -50,7 +50,7 @@ var GameObjectTravel = {
     ['northeast', ''],
     ['southwest', ''],
     ['southeast', ''],
-    ['east block', ''],
+    ['east block', 'blocked'],
     ['west block', ''],
     ['north block', ''],
     ['south block', ''],
@@ -60,7 +60,7 @@ var GameObjectTravel = {
     ['northeast block', ''],
     ['southwest block', ''],
     ['southeast block', ''],
-    ['east block desc', ''],
+    ['east block desc', 'The hallway door is closed. You should look at the door first.'],
     ['west block desc', ''],
     ['north block desc', ''],
     ['south block desc', ''],
@@ -83,7 +83,7 @@ var GameObjectTravel = {
   ],
   hall: [
     ['room', 'hall'],
-    ['east', 'foyer'],
+    ['east', ''],
     ['west', 'foyer'],
     ['north', ''],
     ['south', ''],
@@ -136,7 +136,9 @@ function lamp_look() {
 }
 
 function door_look() {
-  scrnDisplay('A plain wooden door. It opens toward the hallway.');
+  scrnDisplay('A plain wooden door. You inspect the handle and unlock it.');
+  GameObjectTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
+  GameObjectTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
 }
 
 window.addEventListener('load', function () {
