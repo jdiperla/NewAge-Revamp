@@ -74,9 +74,18 @@ if (textcmd === CMDERROR) {
     scrnDisplay(errMsg('nocmd')); //if No synonym or command is found in the synonym list, it will throw an error. Otherwise will continue processing
 }
 else {
-    var executeParse = firstObj[0] + '_' + textcmd; //eg: desk_look
+    var objectKey = firstObj[0];
+    var roomHandlers = (globalThis.GameRoomObjectCommands && GameRoomObjectCommands[OBJECTGLOBAL]) || null;
+    var roomObjectHandler = roomHandlers && roomHandlers[objectKey] && roomHandlers[objectKey][textcmd];
 
+    if (typeof roomObjectHandler === 'function') {
+        roomObjectHandler();
+        return;
+    }
+
+    var executeParse = objectKey + '_' + textcmd; //eg: desk_look
     var execFn = window[executeParse] || globalThis[executeParse];
+
     if (typeof execFn === 'function') {
         //if no command was defined in the code, it will throw an error and run one of the customized error messages
         execFn();

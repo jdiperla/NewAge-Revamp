@@ -1,4 +1,3 @@
-
 // Example game data for NewAge-Revamp.
 // Include this file after globals/functions/parser/core/usercommands files.
 
@@ -13,7 +12,7 @@ var GameObjects = {
     ['Room Name', 'Foyer'],
     ['Id', 'foyer'],
     ['Object Type', 'room'],
-    ['A dim foyer with a dusty table. A hallway leads east.', 'A dim foyer with a dusty table. A hallway leads east.'],
+    ['A dim foyer with a dusty table. A hallway is to the east.', 'A dim foyer with a dusty table. A hallway is to the east.'],
     ['A dim foyer.', 'A dim foyer.'],
     ['Alt names', 'entry'],
     ['Alt names 2', 'hall entry'],
@@ -26,13 +25,26 @@ var GameObjects = {
     ['Room Name', 'Hallway'],
     ['Id', 'hall'],
     ['Object Type', 'room'],
-    ['A narrow hallway. There is a door to the west back to the foyer.', 'A narrow hallway. There is a door to the west back to the foyer.'],
+    ['A narrow hallway. Foyer is west. A small shed is north.', 'A narrow hallway. Foyer is west. A small shed is north.'],
     ['A narrow hallway.', 'A narrow hallway.'],
     ['Alt names', 'passage'],
     ['Alt names 2', 'corridor'],
     ['640', '640'],
     ['360', '360'],
     ['https://picsum.photos/id/1025/640/360', 'https://picsum.photos/id/1025/640/360'],
+    ['', '']
+  ],
+  shed: [
+    ['Room Name', 'Shed'],
+    ['Id', 'shed'],
+    ['Object Type', 'room'],
+    ['A tool shed with a side door hanging open. Hallway is south.', 'A tool shed with a side door hanging open. Hallway is south.'],
+    ['A cramped shed.', 'A cramped shed.'],
+    ['Alt names', 'tool shed'],
+    ['Alt names 2', 'work shed'],
+    ['640', '640'],
+    ['360', '360'],
+    ['https://picsum.photos/id/1067/640/360', 'https://picsum.photos/id/1067/640/360'],
     ['', '']
   ]
 };
@@ -60,7 +72,7 @@ var GameObjectTravel = {
     ['northeast block', ''],
     ['southwest block', ''],
     ['southeast block', ''],
-    ['east block desc', 'The hallway door is closed. You should look at the door first.'],
+    ['east block desc', 'The foyer door is locked.'],
     ['west block desc', ''],
     ['north block desc', ''],
     ['south block desc', ''],
@@ -85,7 +97,7 @@ var GameObjectTravel = {
     ['room', 'hall'],
     ['east', ''],
     ['west', 'foyer'],
-    ['north', ''],
+    ['north', 'shed'],
     ['south', ''],
     ['up', ''],
     ['down', ''],
@@ -123,23 +135,83 @@ var GameObjectTravel = {
     ['from northeast look', ''],
     ['from southwest look', ''],
     ['from southeast look', '']
+  ],
+  shed: [
+    ['room', 'shed'],
+    ['east', ''],
+    ['west', ''],
+    ['north', ''],
+    ['south', 'hall'],
+    ['up', ''],
+    ['down', ''],
+    ['northwest', ''],
+    ['northeast', ''],
+    ['southwest', ''],
+    ['southeast', ''],
+    ['east block', ''],
+    ['west block', ''],
+    ['north block', ''],
+    ['south block', ''],
+    ['up block', ''],
+    ['down block', ''],
+    ['northwest block', ''],
+    ['northeast block', ''],
+    ['southwest block', ''],
+    ['southeast block', ''],
+    ['east block desc', ''],
+    ['west block desc', ''],
+    ['north block desc', ''],
+    ['south block desc', ''],
+    ['up block desc', ''],
+    ['down block desc', ''],
+    ['northwest block desc', ''],
+    ['northeast block desc', ''],
+    ['southwest block desc', ''],
+    ['southeast block desc', ''],
+    ['from east look', ''],
+    ['from west look', ''],
+    ['from north look', ''],
+    ['from south look', ''],
+    ['from up look', ''],
+    ['from down look', ''],
+    ['from northwest look', ''],
+    ['from northeast look', ''],
+    ['from southwest look', ''],
+    ['from southeast look', '']
   ]
 };
 
 var GameObjectsCommands = {
   foyer: {},
-  hall: {}
+  hall: {},
+  shed: {}
 };
 
-function lamp_look() {
-  scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
-}
-
-function door_look() {
-  scrnDisplay('A plain wooden door. You inspect the handle and unlock it.');
-  GameObjectTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
-  GameObjectTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
-}
+// Room-specific object command handlers.
+// Format: GameRoomObjectCommands[roomName][objectName][verb]()
+var GameRoomObjectCommands = {
+  foyer: {
+    door: {
+      look: function () {
+        scrnDisplay('The foyer door is locked. You find a spare key nearby and unlock it.');
+        GameObjectTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
+        GameObjectTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
+      }
+    },
+    lamp: {
+      look: function () {
+        scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
+      }
+    }
+  },
+  shed: {
+    door: {
+      look: function () {
+        scrnDisplay('This shed door is already unlocked and swings freely.');
+      }
+    }
+  }
+};
 
 window.addEventListener('load', function () {
   LoadRoom('foyer');
