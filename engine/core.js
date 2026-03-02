@@ -7,8 +7,8 @@ function LoadRoom(roomname) {
            if (GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] != ''){
  
            document.getElementById("StartRoomLoad").innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay>' + '<source src="' + GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';
-           } else if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
-           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+           } else if (GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
            }
                     document.getElementById("StartRoomText").innerHTML = GameObjects[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1];
                  
@@ -25,8 +25,8 @@ function hidevideo(roomname) {
 
     x.style.display = "none";
 
-if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
-           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+if (GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
            }
            
 }
@@ -41,7 +41,7 @@ if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
 function changeObjectValue(object, field, value, pos = 1){
             //Changes the value of a field for an object. EG: Description, amounts, etc... Object is the room, character, etc.. Field is the field to change and value is what it is changing too. Pos is the position in the array. Default is always 1.
             
-            GameObjects[room][field][pos] = value;
+            GameObjects[object][field][pos] = value;
                         
         }
 
