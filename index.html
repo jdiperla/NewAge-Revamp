@@ -40,6 +40,59 @@
 
   <script>
     (function bootUi() {
+  <script>
+    function buildCandidateUrls(path) {
+      const href = window.location.href;
+      const normalizedBase = href.endsWith('/') ? href : `${href}/`;
+      return [
+        path,
+        `./${path}`,
+        new URL(path, normalizedBase).toString(),
+        new URL(path, window.location.origin + window.location.pathname.replace(/[^/]*$/, '/')).toString(),
+        `/${path}`
+      ];
+    }
+
+    async function loadEngineFile(path) {
+      const candidates = buildCandidateUrls(path);
+      let lastErr = null;
+
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) {
+            lastErr = new Error(`HTTP ${res.status} for ${url}`);
+            continue;
+          }
+
+          let source = await res.text();
+          source = source.replace(/^\s*<script>/i, '').replace(/<\/script>\s*$/i, '');
+          (0, eval)(source);
+          return;
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+
+      throw new Error(`Failed to load ${path}. Last error: ${lastErr ? lastErr.message : 'unknown error'}`);
+    }
+
+    async function boot() {
+      const files = [
+        'includes/globals.js',
+        'includes/globalmessages.js',
+        'includes/functions.js',
+        'includes/synonyms.js',
+        'includes/parser.js',
+        'engine/core.js',
+        'engine/usercommands.js',
+        'gamedata/game.js'
+      ];
+
+      for (const file of files) {
+        await loadEngineFile(file);
+      }
+
       const input = document.getElementById('cmdInput');
       const runBtn = document.getElementById('runBtn');
 
@@ -60,6 +113,13 @@
       runBtn.addEventListener('click', runCommand);
       input.focus();
     })();
+    }
+
+    boot().catch((err) => {
+      const target = document.getElementById('StartRoomText');
+      target.textContent = `Failed to boot game: ${err.message}`;
+      console.error(err);
+    });
   </script>
 </body>
 </html>
