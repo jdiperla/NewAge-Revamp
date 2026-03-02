@@ -41,7 +41,7 @@ if (GameObjects[OBJECTGLOBAL][ROOMIMAGE][1] != ''){
 function changeObjectValue(object, field, value, pos = 1){
             //Changes the value of a field for an object. EG: Description, amounts, etc... Object is the room, character, etc.. Field is the field to change and value is what it is changing too. Pos is the position in the array. Default is always 1.
             
-            GameObjects[room][field][pos] = value;
+            GameObjects[object][field][pos] = value;
                         
         }
 
