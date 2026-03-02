@@ -340,42 +340,41 @@ function rtnStringInstances(string, searchinstance) {
 }
 
 // ===== includes/synonyms.js =====
-
 var synonyms = {
  // Looking
- 'look': [OBJECTLOOK],
- 'view': [OBJECTLOOK],
- 'leer': [OBJECTLOOK],
- 'look-see': [OBJECTLOOK],
- 'examine': [OBJECTLOOK],
- 'inspect': [OBJECTLOOK],
- 'check': [OBJECTLOOK],
+ 'look': ['look'],
+ 'view': ['look'],
+ 'leer': ['look'],
+ 'look-see': ['look'],
+ 'examine': ['look'],
+ 'inspect': ['look'],
+ 'check': ['look'],
 
  // Taking
- 'take': [OBJECTTAKE],
- 'collect': [OBJECTTAKE],
- 'pick up': [OBJECTTAKE],
- 'seize': [OBJECTTAKE],
+ 'take': ['take'],
+ 'collect': ['take'],
+ 'pick up': ['take'],
+ 'seize': ['take'],
 
  // Using/Interacting
- 'use': [OBJECTUSE],
- 'interact': [OBJECTUSE],
- 'handle': [OBJECTUSE],
- 'utilize': [OBJECTUSE],
- 'wield': [OBJECTUSE],
- 'make use': [OBJECTUSE],
+ 'use': ['use'],
+ 'interact': ['use'],
+ 'handle': ['use'],
+ 'utilize': ['use'],
+ 'wield': ['use'],
+ 'make use': ['use'],
 
  // Operating
- 'operate': [OBJECTOPERATE],
- 'manage': [OBJECTOPERATE],
- 'manipulate': [OBJECTOPERATE],
- 'work': [OBJECTOPERATE],
+ 'operate': ['operate'],
+ 'manage': ['operate'],
+ 'manipulate': ['operate'],
+ 'work': ['operate'],
 
  // Talking
- 'talk': [OBJECTTALK],
- 'speak': [OBJECTTALK],
- 'chat': [OBJECTTALK],
- 'converse': [OBJECTTALK]
+ 'talk': ['talk'],
+ 'speak': ['talk'],
+ 'chat': ['talk'],
+ 'converse': ['talk']
 };
 
 // ===== includes/parser.js =====
@@ -457,10 +456,10 @@ if (textcmd === CMDERROR) {
 else {
     var executeParse = firstObj[0] + '_' + textcmd; //eg: desk_look
 
-    if (typeof window[executeParse] === 'function') {
+    var execFn = window[executeParse] || globalThis[executeParse];
+    if (typeof execFn === 'function') {
         //if no command was defined in the code, it will throw an error and run one of the customized error messages
-        executeParse = executeParse + '()';
-        eval(executeParse);
+        execFn();
     }
     else {
         scrnDisplay(errMsg('nocmd'));
@@ -630,17 +629,17 @@ function performTravel() {
     var destination = GameObjectTravel[OBJECTGLOBAL][DIRECTION][1];
     var blockReason = GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCK][1];
 
+    if (blockReason) {
+        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
+        return;
+    }
+
     if (!destination) {
         scrnDisplay(errMsg('noexit'));
         return;
     }
 
-    if (!blockReason) {
-        LoadRoom(destination);
-    }
-    else {
-        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
-    }
+    LoadRoom(destination);
 }
 
 // ===== gamedata/game.js =====
@@ -706,7 +705,7 @@ var GameObjectTravel = {
     ['northeast block', ''],
     ['southwest block', ''],
     ['southeast block', ''],
-    ['east block desc', 'The hallway door is jammed shut.'],
+    ['east block desc', ''],
     ['west block desc', ''],
     ['north block desc', ''],
     ['south block desc', ''],
@@ -729,7 +728,7 @@ var GameObjectTravel = {
   ],
   hall: [
     ['room', 'hall'],
-    ['east', ''],
+    ['east', 'foyer'],
     ['west', 'foyer'],
     ['north', ''],
     ['south', ''],
@@ -739,7 +738,7 @@ var GameObjectTravel = {
     ['northeast', ''],
     ['southwest', ''],
     ['southeast', ''],
-    ['east block', ''],
+    ['east block', 'blocked'],
     ['west block', ''],
     ['north block', ''],
     ['south block', ''],
@@ -749,7 +748,7 @@ var GameObjectTravel = {
     ['northeast block', ''],
     ['southwest block', ''],
     ['southeast block', ''],
-    ['east block desc', ''],
+    ['east block desc', 'A collapsed beam blocks the eastern passage.'],
     ['west block desc', ''],
     ['north block desc', ''],
     ['south block desc', ''],
@@ -788,7 +787,6 @@ function door_look() {
 window.addEventListener('load', function () {
   LoadRoom('foyer');
 });
-
   </script>
 
   <script>

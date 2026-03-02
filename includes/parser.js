@@ -76,15 +76,13 @@ if (textcmd === CMDERROR) {
 else {
     var executeParse = firstObj[0] + '_' + textcmd; //eg: desk_look
 
-    if (typeof window[executeParse] === 'function') {
+    var execFn = window[executeParse] || globalThis[executeParse];
+    if (typeof execFn === 'function') {
         //if no command was defined in the code, it will throw an error and run one of the customized error messages
-        executeParse = executeParse + '()';
-        eval(executeParse);
+        execFn();
     }
     else {
         scrnDisplay(errMsg('nocmd'));
     }
 }
 }
-
-

@@ -112,15 +112,15 @@ function performTravel() {
     var destination = GameObjectTravel[OBJECTGLOBAL][DIRECTION][1];
     var blockReason = GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCK][1];
 
+    if (blockReason) {
+        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
+        return;
+    }
+
     if (!destination) {
         scrnDisplay(errMsg('noexit'));
         return;
     }
 
-    if (!blockReason) {
-        LoadRoom(destination);
-    }
-    else {
-        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
-    }
+    LoadRoom(destination);
 }

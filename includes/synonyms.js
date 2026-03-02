@@ -1,37 +1,36 @@
-
 var synonyms = {
  // Looking
- 'look': [OBJECTLOOK],
- 'view': [OBJECTLOOK],
- 'leer': [OBJECTLOOK],
- 'look-see': [OBJECTLOOK],
- 'examine': [OBJECTLOOK],
- 'inspect': [OBJECTLOOK],
- 'check': [OBJECTLOOK],
+ 'look': ['look'],
+ 'view': ['look'],
+ 'leer': ['look'],
+ 'look-see': ['look'],
+ 'examine': ['look'],
+ 'inspect': ['look'],
+ 'check': ['look'],
 
  // Taking
- 'take': [OBJECTTAKE],
- 'collect': [OBJECTTAKE],
- 'pick up': [OBJECTTAKE],
- 'seize': [OBJECTTAKE],
+ 'take': ['take'],
+ 'collect': ['take'],
+ 'pick up': ['take'],
+ 'seize': ['take'],
 
  // Using/Interacting
- 'use': [OBJECTUSE],
- 'interact': [OBJECTUSE],
- 'handle': [OBJECTUSE],
- 'utilize': [OBJECTUSE],
- 'wield': [OBJECTUSE],
- 'make use': [OBJECTUSE],
+ 'use': ['use'],
+ 'interact': ['use'],
+ 'handle': ['use'],
+ 'utilize': ['use'],
+ 'wield': ['use'],
+ 'make use': ['use'],
 
  // Operating
- 'operate': [OBJECTOPERATE],
- 'manage': [OBJECTOPERATE],
- 'manipulate': [OBJECTOPERATE],
- 'work': [OBJECTOPERATE],
+ 'operate': ['operate'],
+ 'manage': ['operate'],
+ 'manipulate': ['operate'],
+ 'work': ['operate'],
 
  // Talking
- 'talk': [OBJECTTALK],
- 'speak': [OBJECTTALK],
- 'chat': [OBJECTTALK],
- 'converse': [OBJECTTALK]
+ 'talk': ['talk'],
+ 'speak': ['talk'],
+ 'chat': ['talk'],
+ 'converse': ['talk']
 };
