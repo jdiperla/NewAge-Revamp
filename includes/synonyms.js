@@ -35,5 +35,3 @@ var synonyms = {
  'chat': [OBJECTTALK],
  'converse': [OBJECTTALK]
 };
-
-</script>

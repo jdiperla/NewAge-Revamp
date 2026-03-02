@@ -29,70 +29,770 @@
     <div class="help">Try: <code>east</code>, <code>west</code>, <code>look lamp</code>, <code>look door</code>.</div>
   </div>
 
-  <script src="includes/globals.js"></script>
-  <script src="includes/globalmessages.js"></script>
-  <script src="includes/functions.js"></script>
-  <script src="includes/synonyms.js"></script>
-  <script src="includes/parser.js"></script>
-  <script src="engine/core.js"></script>
-  <script src="engine/usercommands.js"></script>
-  <script src="gamedata/game.js"></script>
+  <script>
+// ===== includes/globals.js =====
+//Global Variables for game settings
+var GAMENAME = '';
+var OBJECTGLOBAL = '';  //Indicates the current OBJECT loaded.
+var GAMECURPLAYER = ''; //Indicates the current player you control.
+var GAMESCORE = '0';
+var GLOBALSETCLS = false;
+var GAMEEAST = ['e', 'east', 'go e', 'go east', 'head east', 'head e', 'explore east', 'explore e', 'go eastbound', 'head eastbound', 'go east bound', 'head east bound', 'travel e', 'travel east'];
+var GAMEWEST = ['w', 'west', 'go w', 'go west', 'head west', 'head w', 'explore west', 'explore w', 'go westbound', 'head westbound', 'go west bound', 'head west bound', 'travel w', 'travel west'];
+var GAMESOUTH = ['s', 'south', 'go s', 'go south', 'head south', 'head s', 'explore south', 'explore s', 'go southbound', 'head southbound', 'go south bound', 'head south bound', 'travel s', 'travel south'];
+var GAMENORTH = ['n', 'north', 'go n', 'go north', 'head north', 'head n', 'explore north', 'explore n', 'go northbound', 'head northbound', 'go north bound', 'head north bound', 'travel n', 'travel north'];
+var GAMESOUTHEAST = ['se', 'southeast', 'south east', 'go se', 'go southeast', 'go south east', 'head southeast', 'head se', 'explore southeast', 'explore se', 'go southeastbound', 'head southeastbound', 'go southeast bound', 'head southeast bound', 'travel se', 'travel southeast'];
+var GAMENORTHEAST = ['ne', 'northeast', 'north east', 'go ne', 'go northeast', 'go north east', 'head northeast', 'head ne', 'explore northeast', 'explore ne', 'go northeastbound', 'head northeastbound', 'go northeast bound', 'head northeast bound', 'travel ne', 'travel northeast'];
+var GAMENORTHWEST = ['nw', 'northwest', 'north west', 'go nw', 'go northwest', 'go north west', 'head northwest', 'head nw', 'explore northwest', 'explore nw', 'go northwestbound', 'head northwestbound', 'go northwest bound', 'head northwest bound', 'travel nw', 'travel northwest'];
+var GAMESOUTHWEST = ['sw', 'southwest', 'south west', 'go sw', 'go southwest', 'go south west', 'head southwest', 'head sw', 'explore southwest', 'explore sw', 'go southwestbound', 'head southwestbound', 'go southwest bound', 'head southwest bound', 'travel sw', 'travel southwest'];
+var GAMEUP = ['u', 'up', 'go u', 'go up', 'head up', 'head u', 'explore up', 'explore u', 'go upbound', 'head upbound', 'go upward', 'head upward', 'travel u', 'travel upward', 'climb up', 'climb u', 'climb upward'];
+var GAMEDOWN = ['d', 'down', 'go d', 'go down', 'head down', 'head d', 'explore down', 'explore d', 'go downbound', 'head downbound', 'go downward', 'head downward', 'travel d', 'travel downward', 'climb down', 'climb d', 'climb downward'];
+
+
+//Global constiables for Game Object details
+const OBJECTNAME = 0;
+const OBJECTID = 1;
+const OBJECTTYPE = 2 ;
+const OBJECTDESCFIRSTTIME = 3;
+const OBJECTDESC = 4;
+const OBJECTSHORTDESC = 5;
+const OBJECTALTNAMES = 6;
+const OBJECTXSIZE = 7;
+const OBJECTYSIZE = 8;
+const OBJECTIMAGE = 9;
+const OBJECTMOVIE = 10;
+const OBJECTPLAYERSTATUS = 11;
+const OBJECTAMOUNT = 12; //How much of the object exists.
+const OBJECTSCORE = 13;
+const OBJECTTICKER = 14; //Ticks off each time the object was entered.
+const OBJECTTICKERUSE = 15; //How many times the object was used.
+
+//Global Const to be used with GameObjectContainer for containing inventory and equiping items.
+const OBJECTCONTAINER = 1;
+const OBJECTEQUIPHEAD = 2;
+const OBJECTEQUIPEYES = 3;
+const OBJECTEQUIPEARS = 4;
+const OBJECTEQUIPMOUTH = 5;
+const OBJECTEQUIPLEFTHAND = 6;
+const OBJECTEQUIPRIGHTHAND = 7;
+const OBJECTEQUIPLEFTFOOT = 8;
+const OBJECTEQUIPRIGHTFOOT = 9;
+const OBJECTEQUIPFRONTTORSO = 10;
+
+//Global constiables for Game Object direction details for obect: GameObjectTravel
+const OBJECTGOEAST = 1;
+const OBJECTGOWEST = 2;
+const OBJECTGONORTH = 3;
+const OBJECTGOSOUTH = 4;
+const OBJECTGOUP = 5;
+const OBJECTGODOWN = 6;
+const OBJECTGONORTHWEST = 7;
+const OBJECTGONORTHEAST = 8;
+const OBJECTGOSOUTHWEST = 9;
+const OBJECTGOSOUTHEAST = 10;
+
+//Global constiables for Game Object Blocked or locked Locations. Used with GameObjectTravel
+const OBJECTGOEASTBLOCK = 11;
+const OBJECTGOWESTBLOCK = 12;
+const OBJECTGONORTHBLOCK = 13;
+const OBJECTGOSOUTHBLOCK = 14;
+const OBJECTGOUPBLOCK = 15;
+const OBJECTGODOWNBLOCK = 16;
+const OBJECTGONORTHWESTBLOCK = 17;
+const OBJECTGONORTHEASTBLOCK = 18;
+const OBJECTGOSOUTHWESTBLOCK = 19;
+const OBJECTGOSOUTHEASTBLOCK = 20;
+
+//Global constiables for Game Object Description to specify why the location is locked. Used with GameObjectTravel
+const OBJECTGOEASTBLOCKDESC = 21;
+const OBJECTGOWESTBLOCKDESC = 22;
+const OBJECTGONORTHBLOCKDESC = 23;
+const OBJECTGOSOUTHBLOCKDESC = 24;
+const OBJECTGOUPBLOCKDESC = 25;
+const OBJECTGODOWNBLOCKDESC = 26;
+const OBJECTGONORTHWESTBLOCKDESC = 27;
+const OBJECTGONORTHEASTBLOCKDESC = 28;
+const OBJECTGOSOUTHWESTBLOCKDESC = 29;
+const OBJECTGOSOUTHEASTBLOCKDESC = 30;
+
+//Global constiables for GameObjectTravel Description when looking at OBJECT from constious directions(EG: Look from southwest at OBJECT)
+const OBJECTFROMEASTLOOK = 31;
+const OBJECTFROMWESTLOOK = 32;
+const OBJECTFROMNORTHLOOK = 33;
+const OBJECTFROMSOUTHLOOK = 34;
+const OBJECTFROMUPLOOK = 35;
+const OBJECTFROMDOWNLOOK = 36;
+const OBJECTFROMNORTHWESTLOOK = 37;
+const OBJECTFROMNORTHEASTLOOK = 38;
+const OBJECTFROMSOUTHWESTLOOK = 39;
+const OBJECTFROMSOUTHEASTLOOK = 40;
+
+//Global for Object events in GameObjectEvents
+const OBJECTONENTER = 1;
+const OBJECTONENTERTIMES = 2;
+
+//Global constiables for GameObjectCommands
+const OBJECTLOOK = 1;
+const OBJECTTALK = 2;
+const OBJECTTAKE = 3;
+const OBJECTKICK = 4;
+const OBJECTLICK = 5;
+const OBJECTPUNCH = 6;
+const OBJECTPUSH = 7;
+const OBJECTPULL = 8;
+const OBJECTTASTE = 9;
+const OBJECTSMELL = 10;
+const OBJECTLISTEN = 11;
+const OBJECTTURNON = 12;
+const OBJECTTURNOFF = 13;
+const OBJECTTHINK = 14;
+const OBJECTSMILE = 15;
+const OBJECTCRY = 16;
+const OBJECTTHROW = 17;
+const OBJECTSHOOT = 18;
+const OBJECTOPEN = 19;
+const OBJECTCLOSE = 20;
+const OBJECTFIGHT = 21;
+const OBJECTUSE = 22;
+const OBJECTPUTON = 23;
+const OBJECTTAKEOFF = 24;
+const OBJECTPICKUP = 25;
+const OBJECTLOCK = 26;
+const OBJECTUNLOCK = 27;
+const OBJECTREAD = 28;
+const OBJECTFIX = 29;
+const OBJECTCLIMB = 30;
+const OBJECTMOVE = 31;
+const OBJECTDROP = 32;
+const OBJECTATTACK = 33;
+const OBJECTHIT = 34;
+const OBJECTBITE = 35;
+const OBJECTLAUGH = 36;
+const OBJECTSWITCH = 37;
+const OBJECTFLICK = 38;
+const OBJECTTRIGGER = 39;
+const OBJECTTRANSFORM = 40;
+const OBJECTASK = 41;
+const OBJECTBLOW = 42;
+const OBJECTYELL = 43;
+const OBJECTKNOCK = 44;
+const OBJECTMOUNT = 45;
+const OBJECTDISMOUNT = 46;
+const OBJECTEAT = 47;
+const OBJECTSWALLOW = 48;
+const OBJECTSIT = 49;
+const OBJECTSTEP = 50;
+const OBJECTSTAND = 51;
+const OBJECTDROPKICK = 52;
+const OBJECTMOCK = 53;
+const OBJECTSEAL = 54;
+const OBJECTUNSEAL = 55;
+const OBJECTCUT = 56;
+const OBJECTSTAB = 57;
+const OBJECTRIP = 58;
+const OBJECTSLICE = 59;
+const OBJECTLAND = 60;
+const OBJECTTHANK = 61;
+const OBJECTSWEAR = 62;
+const OBJECTTEASE = 63;
+const OBJECTPOINT = 64;
+const OBJECTKISS = 65;
+const OBJECTHUG = 66;
+const OBJECTTOUCH = 67;
+const OBJECTGIVE = 68;
+const OBJECTSLAP = 70;
+const OBJECTCHALLENGE = 71;
+const OBJECTSING = 72;
+const OBJECTCALL = 73;
+const OBJECTSPARE = 74;
+const OBJECTHELP = 75;
+const OBJECTHEAL = 76;
+const OBJECTKILL = 77;
+const OBJECTPUT = 78;
+const OBJECTSALUTE = 79;
+const OBJECTGREET = 80;
+const OBJECTFALL = 81;
+const OBJECTJUMP = 82;
+const OBJECTSHOUT = 83;
+const OBJECTWHISPER = 84;
+const OBJECTRUN = 85;
+const OBJECTWALK = 86;
+const OBJECTDEFEND = 87;
+const OBJECTTIE = 88;
+const OBJECTUNTIE = 89;
+const OBJECTBREAK = 90;
+const OBJECTSNORT = 91;
+const OBJECTDRINK = 92;
+const OBJECTPRAY = 93;
+const OBJECTWINK = 94;
+const OBJECTSMOKE = 95;
+const OBJECTLIGHT = 96;
+const OBJECTACTIVATE = 97;
+const OBJECTDEACTIVATE = 98;
+const OBJECTOPERATE = 99;
+const OBJECTANSWER = 101;
+const OBJECTBURN = 102;
+const OBJECTCOUNT = 103;
+const OBJECTINFLATE = 104;
+const OBJECTDEFLATE = 105;
+const OBJECTCROSS = 106;
+const OBJECTDIG = 107;
+const OBJECTBURY = 108;
+const OBJECTENTER = 109;
+const OBJECTEXIT = 110;
+const OBJECTEMPTY = 111;
+const OBJECTFILL = 112;
+const OBJECTEXTINGUISH = 113;
+const OBJECTFOLLOW = 114;
+const OBJECTTRANSFER = 116;
+const OBJECTRAISE = 118;
+const OBJECTLOWER = 119;
+const OBJECTSEARCH = 120;
+const OBJECTSHAKE = 121;
+const OBJECTSLIDE = 122;
+const OBJECTSTAY = 123;
+const OBJECTSTRIKE = 124;
+const OBJECTFIRE = 125;
+const OBJECTSWIM = 126;
+const OBJECTTELL = 127;
+const OBJECTWAKE = 128;
+const OBJECTCHARM = 129;
+const OBJECTWAVE = 130;
+const OBJECTWIND = 131;
+const OBJECTDRILL = 132;
+const OBJECTHAMMER = 133;
+const OBJECTSCREW = 134;
+const OBJECTPOUND = 135;
+
+// ===== includes/globalmessages.js =====
+
+var globalmsg = {
+//For no exit found
+     'noexit': [
+          ["You can't go that way."], ["There is no exit in that direction."]
+      ],
+     'nocmd': [
+          ["Quit spinning your wheels."], ["You can't do that."], ["Please stop trying that."], ["No, just.. NO!"]
+          ]
+};
+
+// ===== includes/functions.js =====
+
+function replaceAll(str, find, replace) {
+  return str.split(find).join(replace);
+}
+
+function errMsg(errorglobal) {
+ //Whenever the player wants to go in a direction that does not exist at the current location, the exit message will throw out a random
+ //exit message from the global list.
+  var rndMsgLngth = globalmsg[errorglobal].length;
+  var rndMsgRst = Math.floor(Math.random() * rndMsgLngth);
+  return globalmsg[errorglobal][rndMsgRst];
+}
+
+function scrnDisplay(text2dis) {
+ //Function that writes to the screen.
+  var roomText = document.getElementById('StartRoomText');
+
+  if (GLOBALSETCLS === true) {
+   //if globally set to clear the screen for every new text inputted.
+    roomText.innerHTML = text2dis;
+  }
+  else {
+    roomText.innerHTML += text2dis;
+  }
+}
+
+function findBetween(text, firststring, secondstring){
+  //Function to text between two strings.
+  var regExString = new RegExp('(?:' + firststring + ')((.[\\s\\S]*))(?:' + secondstring + ')', 'ig');
+  var strResult = regExString.exec(text);
+
+  return strResult[1];
+}
+
+function strDelimiterCnt(text, delimiter){
+ //Function to enter a string and divide it using a delimiter and return the count
+  var textsep = text.split(delimiter);
+
+  return textsep.length;
+}
+
+function strDelimiter(text, delimiter, pos){
+ //Function to enter a string and divide it using a delimiter and return the string at the split position
+  var textsep = text.split(delimiter);
+
+  return textsep[pos];
+}
+
+function rtnStringInstances(string, searchinstance) {
+//returns the number of times the search appears in the string.
+  var escaped = searchinstance.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var regex = new RegExp(escaped, 'gi');
+  var result;
+  var indices = [];
+
+  while ((result = regex.exec(string))) {
+    indices.push(result);
+  }
+
+  return indices.length;
+}
+
+// ===== includes/synonyms.js =====
+
+var synonyms = {
+ // Looking
+ 'look': [OBJECTLOOK],
+ 'view': [OBJECTLOOK],
+ 'leer': [OBJECTLOOK],
+ 'look-see': [OBJECTLOOK],
+ 'examine': [OBJECTLOOK],
+ 'inspect': [OBJECTLOOK],
+ 'check': [OBJECTLOOK],
+
+ // Taking
+ 'take': [OBJECTTAKE],
+ 'collect': [OBJECTTAKE],
+ 'pick up': [OBJECTTAKE],
+ 'seize': [OBJECTTAKE],
+
+ // Using/Interacting
+ 'use': [OBJECTUSE],
+ 'interact': [OBJECTUSE],
+ 'handle': [OBJECTUSE],
+ 'utilize': [OBJECTUSE],
+ 'wield': [OBJECTUSE],
+ 'make use': [OBJECTUSE],
+
+ // Operating
+ 'operate': [OBJECTOPERATE],
+ 'manage': [OBJECTOPERATE],
+ 'manipulate': [OBJECTOPERATE],
+ 'work': [OBJECTOPERATE],
+
+ // Talking
+ 'talk': [OBJECTTALK],
+ 'speak': [OBJECTTALK],
+ 'chat': [OBJECTTALK],
+ 'converse': [OBJECTTALK]
+};
+
+// ===== includes/parser.js =====
+
+/*This will parse the command line input received by the user/player and will parse the commands, useless words and objects and Eval
+the correct function to perform. myActionArray and myStringArray act as a container for the command words. myIgnoredWods and myUselessWords
+act as a container for words to ignore such "With, on, for, etc...". consoleString & cmdSTR would be the complete command entered by the user.
+textCMD will the command word that was parsed(EG: Look, Talk, etc...). objectTXT grabs the object that we are performing the action on. */
+
+//Example: ParsePlayerInput('the,At,On', 'on,with,and', 'Talk at the Shiny Lamp')
+function ParsePlayerInput(myIgnoredWords, delimeterWords, consoleString) {
+
+//create array for delimeterWords and ignored words
+var coldelwords = [];
+var coligwords = [];
+
+//make all input lowercase so all cases match
+var myUselessWords = myIgnoredWords;
+myUselessWords = myUselessWords.toLowerCase();
+myUselessWords = myUselessWords.split(',');
+
+consoleString = consoleString.toLowerCase();
+var phrasedirect = '';
+var onewordcmd = consoleString.split(' ').slice(0, 1).join(' ');
+var twowordcmd = consoleString.split(' ').slice(0, 2).join(' ');
+var threewordcmd = consoleString.split(' ').slice(0, 3).join(' ');
+
+var textcmd = '';
+var firstObj = '';
+
+//Find the command
+for (let syn in synonyms) {
+    if (syn === onewordcmd || syn === twowordcmd || syn === threewordcmd) {
+        textcmd = synonyms[syn][0];
+        phrasedirect = syn;
+        break;
+    }
+}
+
+if (!textcmd) {
+    textcmd = CMDERROR;
+}
+
+if (textcmd) {
+//this removes the command word "textcmd" from the input string
+consoleString = consoleString.replace(phrasedirect, '');
+
+}
+
+//Remove the ignored words now
+myIgnoredWords = myIgnoredWords.toLowerCase();
+var a = myIgnoredWords.split(','), i;
+
+for (i = 0; i < a.length; i++) {
+var replacedWord = ' ' + a[i] + ' ';
+coligwords.push(replacedWord.trim());
+    consoleString = replaceAll(consoleString, replacedWord, ' ');
+}
+
+//This will replace delimeter words such as on/and/with or whatever is described with a comma to make it into an array
+delimeterWords = delimeterWords.toLowerCase();
+a = delimeterWords.split(',');
+
+for (i = 0; i < a.length; i++) {
+var replacedDelWord = ' ' + a[i] + ' ';
+    consoleString = replaceAll(consoleString, replacedDelWord, ',');
+    coldelwords.push(replacedDelWord.trim());
+}
+
+//replace white space commands with an underscore after trimming the whitespaces at either end
+consoleString = consoleString.trim();
+consoleString = replaceAll(consoleString, ' ', '_');
+
+firstObj = consoleString.split(',', 2);
+
+if (textcmd === CMDERROR) {
+    scrnDisplay(errMsg('nocmd')); //if No synonym or command is found in the synonym list, it will throw an error. Otherwise will continue processing
+}
+else {
+    var executeParse = firstObj[0] + '_' + textcmd; //eg: desk_look
+
+    if (typeof window[executeParse] === 'function') {
+        //if no command was defined in the code, it will throw an error and run one of the customized error messages
+        executeParse = executeParse + '()';
+        eval(executeParse);
+    }
+    else {
+        scrnDisplay(errMsg('nocmd'));
+    }
+}
+}
+
+// ===== engine/core.js =====
+function LoadRoom(roomname) {
+//Loads the specified room and sets the global setting. If a movie file is specified, the engine will play the movie file first. Once the movie is done, it will load the room image. Currently, the video will only play thru once. Once it is played, it will just show an image. If no movie is specified, it will load simply the room background image. If no image is present, it will show no image.
+    
+           OBJECTGLOBAL = roomname;
+          
+           if (GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] != ''){
+ 
+           document.getElementById("StartRoomLoad").innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay>' + '<source src="' + GameObjects[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';
+           } else if (GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+           }
+                    document.getElementById("StartRoomText").innerHTML = GameObjects[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1];
+                 
+                 
+                 
+                            }
+
+
+function hidevideo(roomname) {
+//This function is called once a video is played on room enter. It will close the video and then show the image if there is one. 
+
+  var x = document.getElementById("mainvid");
+  var y = document.getElementById("RoomBackground");
+
+    x.style.display = "none";
+
+if (GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] != ''){
+           document.getElementById("StartRoomLoad").innerHTML = "<img src='" + GameObjects[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameObjects[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameObjects[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+           }
+           
+}
+
+  function executeObjectCmd(object, pos = 1) {
+            //Function to execute the scripted command for the object. Object is the object command name. Pos is the position of the script.
+            
+            eval(GameObjectsCommands[OBJECTGLOBAL][object][pos]);
+            
+        }
+
+function changeObjectValue(object, field, value, pos = 1){
+            //Changes the value of a field for an object. EG: Description, amounts, etc... Object is the room, character, etc.. Field is the field to change and value is what it is changing too. Pos is the position in the array. Default is always 1.
+            
+            GameObjects[object][field][pos] = value;
+                        
+        }
+
+// ===== engine/usercommands.js =====
+var DIRECTION = '';
+var DIRECTIONBLOCK = '';
+var DIRECTIONBLOCKDESC = '';
+
+function iterateCmds(command) {
+//This command separates commands based on a set of words that can be used as delimiters and then runs each set of commands one after the other.
+//EG: Put the water in the pot. Then Put the pot on the stove. Turn the stove on. 
+//This still needs work though as some of these delimiter words can be used for other things besides delimiting a sentence.
+
+    command = command.toLowerCase();
+    command = replaceAll(command, 'and also', '||');
+    command = replaceAll(command, 'and then', '||');
+    command = replaceAll(command, 'then also', '||');
+    command = replaceAll(command, '. then', '||');
+    command = replaceAll(command, 'then', '||');
+    command = replaceAll(command, 'also', '||');
+    command = replaceAll(command, 'and', '||');
+    command = replaceAll(command, '.', '||');
+
+    var cmdsplit = command.split('||');
+
+    for (var i = 0; i < cmdsplit.length; i++) {
+        var singleCmd = cmdsplit[i].trim();
+        if (singleCmd) {
+            processcommand(singleCmd);
+        }
+    }
+}
+
+function processcommand(command) {
+    let EAST = GAMEEAST.includes(command);
+    let WEST = GAMEWEST.includes(command);
+    let SOUTH = GAMESOUTH.includes(command);
+    let NORTH = GAMENORTH.includes(command);
+    let NORTHEAST = GAMENORTHEAST.includes(command);
+    let SOUTHEAST = GAMESOUTHEAST.includes(command);
+    let SOUTHWEST = GAMESOUTHWEST.includes(command);
+    let NORTHWEST = GAMENORTHWEST.includes(command);
+    let UP = GAMEUP.includes(command);
+    let DOWN = GAMEDOWN.includes(command);
+
+    if (EAST) {
+        DIRECTION = OBJECTGOEAST;
+        DIRECTIONBLOCK = OBJECTGOEASTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOEASTBLOCKDESC;
+        performTravel();
+    }
+    else if (WEST) {
+        DIRECTION = OBJECTGOWEST;
+        DIRECTIONBLOCK = OBJECTGOWESTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOWESTBLOCKDESC;
+        performTravel();
+    }
+    else if (SOUTH) {
+        DIRECTION = OBJECTGOSOUTH;
+        DIRECTIONBLOCK = OBJECTGOSOUTHBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOSOUTHBLOCKDESC;
+        performTravel();
+    }
+    else if (NORTH) {
+        DIRECTION = OBJECTGONORTH;
+        DIRECTIONBLOCK = OBJECTGONORTHBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGONORTHBLOCKDESC;
+        performTravel();
+    }
+    else if (NORTHEAST) {
+        DIRECTION = OBJECTGONORTHEAST;
+        DIRECTIONBLOCK = OBJECTGONORTHEASTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGONORTHEASTBLOCKDESC;
+        performTravel();
+    }
+    else if (SOUTHEAST) {
+        DIRECTION = OBJECTGOSOUTHEAST;
+        DIRECTIONBLOCK = OBJECTGOSOUTHEASTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOSOUTHEASTBLOCKDESC;
+        performTravel();
+    }
+    else if (SOUTHWEST) {
+        DIRECTION = OBJECTGOSOUTHWEST;
+        DIRECTIONBLOCK = OBJECTGOSOUTHWESTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOSOUTHWESTBLOCKDESC;
+        performTravel();
+    }
+    else if (NORTHWEST) {
+        DIRECTION = OBJECTGONORTHWEST;
+        DIRECTIONBLOCK = OBJECTGONORTHWESTBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGONORTHWESTBLOCKDESC;
+        performTravel();
+    }
+    else if (UP) {
+        DIRECTION = OBJECTGOUP;
+        DIRECTIONBLOCK = OBJECTGOUPBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGOUPBLOCKDESC;
+        performTravel();
+    }
+    else if (DOWN) {
+        DIRECTION = OBJECTGODOWN;
+        DIRECTIONBLOCK = OBJECTGODOWNBLOCK;
+        DIRECTIONBLOCKDESC = OBJECTGODOWNBLOCKDESC;
+        performTravel();
+    }
+    //The final else. If all else fails, parse the command that was given.
+    else {
+        ParsePlayerInput(IGNOREWORDS, DELIMETERWORDS, command);
+    }
+}
+
+function performTravel() {
+ //The function first checks if the direction is blocked. If not, it will load the room.
+ //If the Direction is blocked or locked, it will then display the lock message on the screen.
+ //If the Direction you are heading in does not have an exit, it will run the command for "no exit found".
+    var destination = GameObjectTravel[OBJECTGLOBAL][DIRECTION][1];
+    var blockReason = GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCK][1];
+
+    if (!destination) {
+        scrnDisplay(errMsg('noexit'));
+        return;
+    }
+
+    if (!blockReason) {
+        LoadRoom(destination);
+    }
+    else {
+        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
+    }
+}
+
+// ===== gamedata/game.js =====
+
+// Example game data for NewAge-Revamp.
+// Include this file after globals/functions/parser/core/usercommands files.
+
+var IGNOREWORDS = 'the,a,an,to,at';
+var DELIMETERWORDS = 'with,on,using,and';
+var CMDERROR = 'CMDERROR';
+
+GAMENAME = 'Example: The Lantern Hall';
+
+var GameObjects = {
+  foyer: [
+    ['Room Name', 'Foyer'],
+    ['Id', 'foyer'],
+    ['Object Type', 'room'],
+    ['A dim foyer with a dusty table. A hallway leads east.', 'A dim foyer with a dusty table. A hallway leads east.'],
+    ['A dim foyer.', 'A dim foyer.'],
+    ['Alt names', 'entry'],
+    ['Alt names 2', 'hall entry'],
+    ['640', '640'],
+    ['360', '360'],
+    ['https://picsum.photos/id/1018/640/360', 'https://picsum.photos/id/1018/640/360'],
+    ['', '']
+  ],
+  hall: [
+    ['Room Name', 'Hallway'],
+    ['Id', 'hall'],
+    ['Object Type', 'room'],
+    ['A narrow hallway. There is a door to the west back to the foyer.', 'A narrow hallway. There is a door to the west back to the foyer.'],
+    ['A narrow hallway.', 'A narrow hallway.'],
+    ['Alt names', 'passage'],
+    ['Alt names 2', 'corridor'],
+    ['640', '640'],
+    ['360', '360'],
+    ['https://picsum.photos/id/1025/640/360', 'https://picsum.photos/id/1025/640/360'],
+    ['', '']
+  ]
+};
+
+var GameObjectTravel = {
+  foyer: [
+    ['room', 'foyer'],
+    ['east', 'hall'],
+    ['west', ''],
+    ['north', ''],
+    ['south', ''],
+    ['up', ''],
+    ['down', ''],
+    ['northwest', ''],
+    ['northeast', ''],
+    ['southwest', ''],
+    ['southeast', ''],
+    ['east block', ''],
+    ['west block', ''],
+    ['north block', ''],
+    ['south block', ''],
+    ['up block', ''],
+    ['down block', ''],
+    ['northwest block', ''],
+    ['northeast block', ''],
+    ['southwest block', ''],
+    ['southeast block', ''],
+    ['east block desc', 'The hallway door is jammed shut.'],
+    ['west block desc', ''],
+    ['north block desc', ''],
+    ['south block desc', ''],
+    ['up block desc', ''],
+    ['down block desc', ''],
+    ['northwest block desc', ''],
+    ['northeast block desc', ''],
+    ['southwest block desc', ''],
+    ['southeast block desc', ''],
+    ['from east look', ''],
+    ['from west look', ''],
+    ['from north look', ''],
+    ['from south look', ''],
+    ['from up look', ''],
+    ['from down look', ''],
+    ['from northwest look', ''],
+    ['from northeast look', ''],
+    ['from southwest look', ''],
+    ['from southeast look', '']
+  ],
+  hall: [
+    ['room', 'hall'],
+    ['east', ''],
+    ['west', 'foyer'],
+    ['north', ''],
+    ['south', ''],
+    ['up', ''],
+    ['down', ''],
+    ['northwest', ''],
+    ['northeast', ''],
+    ['southwest', ''],
+    ['southeast', ''],
+    ['east block', ''],
+    ['west block', ''],
+    ['north block', ''],
+    ['south block', ''],
+    ['up block', ''],
+    ['down block', ''],
+    ['northwest block', ''],
+    ['northeast block', ''],
+    ['southwest block', ''],
+    ['southeast block', ''],
+    ['east block desc', ''],
+    ['west block desc', ''],
+    ['north block desc', ''],
+    ['south block desc', ''],
+    ['up block desc', ''],
+    ['down block desc', ''],
+    ['northwest block desc', ''],
+    ['northeast block desc', ''],
+    ['southwest block desc', ''],
+    ['southeast block desc', ''],
+    ['from east look', ''],
+    ['from west look', ''],
+    ['from north look', ''],
+    ['from south look', ''],
+    ['from up look', ''],
+    ['from down look', ''],
+    ['from northwest look', ''],
+    ['from northeast look', ''],
+    ['from southwest look', ''],
+    ['from southeast look', '']
+  ]
+};
+
+var GameObjectsCommands = {
+  foyer: {},
+  hall: {}
+};
+
+function lamp_look() {
+  scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
+}
+
+function door_look() {
+  scrnDisplay('A plain wooden door. It opens toward the hallway.');
+}
+
+window.addEventListener('load', function () {
+  LoadRoom('foyer');
+});
+
+  </script>
 
   <script>
     (function bootUi() {
-  <script>
-    function buildCandidateUrls(path) {
-      const href = window.location.href;
-      const normalizedBase = href.endsWith('/') ? href : `${href}/`;
-      return [
-        path,
-        `./${path}`,
-        new URL(path, normalizedBase).toString(),
-        new URL(path, window.location.origin + window.location.pathname.replace(/[^/]*$/, '/')).toString(),
-        `/${path}`
-      ];
-    }
-
-    async function loadEngineFile(path) {
-      const candidates = buildCandidateUrls(path);
-      let lastErr = null;
-
-      for (const url of candidates) {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) {
-            lastErr = new Error(`HTTP ${res.status} for ${url}`);
-            continue;
-          }
-
-          let source = await res.text();
-          source = source.replace(/^\s*<script>/i, '').replace(/<\/script>\s*$/i, '');
-          (0, eval)(source);
-          return;
-        } catch (err) {
-          lastErr = err;
-        }
-      }
-
-      throw new Error(`Failed to load ${path}. Last error: ${lastErr ? lastErr.message : 'unknown error'}`);
-    }
-
-    async function boot() {
-      const files = [
-        'includes/globals.js',
-        'includes/globalmessages.js',
-        'includes/functions.js',
-        'includes/synonyms.js',
-        'includes/parser.js',
-        'engine/core.js',
-        'engine/usercommands.js',
-        'gamedata/game.js'
-      ];
-
-      for (const file of files) {
-        await loadEngineFile(file);
-      }
-
       const input = document.getElementById('cmdInput');
       const runBtn = document.getElementById('runBtn');
 
@@ -113,13 +813,6 @@
       runBtn.addEventListener('click', runCommand);
       input.focus();
     })();
-    }
-
-    boot().catch((err) => {
-      const target = document.getElementById('StartRoomText');
-      target.textContent = `Failed to boot game: ${err.message}`;
-      console.error(err);
-    });
   </script>
 </body>
 </html>
