@@ -1,4 +1,3 @@
-<script>
 
 var synonyms = {
  // Looking

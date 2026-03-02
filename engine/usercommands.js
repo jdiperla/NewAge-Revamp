@@ -1,4 +1,3 @@
-<script>
 var DIRECTION = '';
 var DIRECTIONBLOCK = '';
 var DIRECTIONBLOCKDESC = '';
@@ -125,5 +124,3 @@ function performTravel() {
         scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
     }
 }
-
-</script>

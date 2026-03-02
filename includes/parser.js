@@ -1,4 +1,3 @@
-<script>
 
 /*This will parse the command line input received by the user/player and will parse the commands, useless words and objects and Eval
 the correct function to perform. myActionArray and myStringArray act as a container for the command words. myIgnoredWods and myUselessWords

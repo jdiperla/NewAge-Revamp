@@ -1,4 +1,3 @@
-<script>
 
 var globalmsg = {
 //For no exit found
@@ -9,5 +8,3 @@ var globalmsg = {
           ["Quit spinning your wheels."], ["You can't do that."], ["Please stop trying that."], ["No, just.. NO!"]
           ]
 };
-
-</script>

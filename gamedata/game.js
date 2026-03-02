@@ -1,4 +1,3 @@
-<script>
 
 // Example game data for NewAge-Revamp.
 // Include this file after globals/functions/parser/core/usercommands files.
@@ -143,5 +142,3 @@ function door_look() {
 window.addEventListener('load', function () {
   LoadRoom('foyer');
 });
-
-</script>

@@ -29,6 +29,17 @@
     <div class="help">Try: <code>east</code>, <code>west</code>, <code>look lamp</code>, <code>look door</code>.</div>
   </div>
 
+  <script src="includes/globals.js"></script>
+  <script src="includes/globalmessages.js"></script>
+  <script src="includes/functions.js"></script>
+  <script src="includes/synonyms.js"></script>
+  <script src="includes/parser.js"></script>
+  <script src="engine/core.js"></script>
+  <script src="engine/usercommands.js"></script>
+  <script src="gamedata/game.js"></script>
+
+  <script>
+    (function bootUi() {
   <script>
     function buildCandidateUrls(path) {
       const href = window.location.href;
@@ -101,6 +112,7 @@
 
       runBtn.addEventListener('click', runCommand);
       input.focus();
+    })();
     }
 
     boot().catch((err) => {

@@ -1,4 +1,3 @@
-<script>
 function LoadRoom(roomname) {
 //Loads the specified room and sets the global setting. If a movie file is specified, the engine will play the movie file first. Once the movie is done, it will load the room image. Currently, the video will only play thru once. Once it is played, it will just show an image. If no movie is specified, it will load simply the room background image. If no image is present, it will show no image.
     
@@ -44,6 +43,3 @@ function changeObjectValue(object, field, value, pos = 1){
             GameObjects[object][field][pos] = value;
                         
         }
-
-
-</script>

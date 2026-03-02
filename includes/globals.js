@@ -1,4 +1,3 @@
-<script>
 //Global Variables for game settings
 var GAMENAME = '';
 var OBJECTGLOBAL = '';  //Indicates the current OBJECT loaded.
@@ -168,7 +167,6 @@ const OBJECTKISS = 65;
 const OBJECTHUG = 66;
 const OBJECTTOUCH = 67;
 const OBJECTGIVE = 68;
-const OBJECTTAKE = 69;
 const OBJECTSLAP = 70;
 const OBJECTCHALLENGE = 71;
 const OBJECTSING = 72;
@@ -199,7 +197,6 @@ const OBJECTLIGHT = 96;
 const OBJECTACTIVATE = 97;
 const OBJECTDEACTIVATE = 98;
 const OBJECTOPERATE = 99;
-const OBJECTSING = 100;
 const OBJECTANSWER = 101;
 const OBJECTBURN = 102;
 const OBJECTCOUNT = 103;
@@ -214,9 +211,7 @@ const OBJECTEMPTY = 111;
 const OBJECTFILL = 112;
 const OBJECTEXTINGUISH = 113;
 const OBJECTFOLLOW = 114;
-const OBJECTKNOCK = 115;
 const OBJECTTRANSFER = 116;
-const OBJECTMOVE = 117;
 const OBJECTRAISE = 118;
 const OBJECTLOWER = 119;
 const OBJECTSEARCH = 120;
@@ -235,6 +230,3 @@ const OBJECTDRILL = 132;
 const OBJECTHAMMER = 133;
 const OBJECTSCREW = 134;
 const OBJECTPOUND = 135;
-
-
-</script>

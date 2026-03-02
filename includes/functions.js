@@ -1,4 +1,3 @@
-<script>
 
 function replaceAll(str, find, replace) {
   return str.split(find).join(replace);
@@ -60,5 +59,3 @@ function rtnStringInstances(string, searchinstance) {
 
   return indices.length;
 }
-
-</script>
