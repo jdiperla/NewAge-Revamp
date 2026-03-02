@@ -109,13 +109,11 @@ function performTravel() {
  //The function first checks if the direction is blocked. If not, it will load the room.
  //If the Direction is blocked or locked, it will then display the lock message on the screen.
  //If the Direction you are heading in does not have an exit, it will run the command for "no exit found".
-    var travelData = GameObjectTravel[OBJECTGLOBAL] || [];
-    var destination = (travelData[DIRECTION] && travelData[DIRECTION][1]) || '';
-    var blockReason = (travelData[DIRECTIONBLOCK] && travelData[DIRECTIONBLOCK][1]) || '';
-    var blockDesc = (travelData[DIRECTIONBLOCKDESC] && travelData[DIRECTIONBLOCKDESC][1]) || '';
+    var destination = GameObjectTravel[OBJECTGLOBAL][DIRECTION][1];
+    var blockReason = GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCK][1];
 
-    if (blockReason !== '' || blockDesc !== '') {
-        scrnDisplay(blockDesc || errMsg('noexit'));
+    if (blockReason) {
+        scrnDisplay(GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCKDESC][1]);
         return;
     }
 
