@@ -72,7 +72,7 @@ consoleString = replaceAll(consoleString, ' ', '_');
 firstObj = consoleString.split(',', 2);
 
 if (textcmd === CMDERROR) {
-    scrnDisplay(errMsg('nocmd')); //if No synonym or command is found in the synonym list, it will throw an error. Otherwise will continue processing
+    errMsg('nocmd'); //if No synonym or command is found in the synonym list, it will throw an error. Otherwise will continue processing
 }
 else {
     var executeParse = firstObj[0] + '_' + textcmd; //eg: desk_look
@@ -83,7 +83,7 @@ else {
         eval(executeParse);
     }
     else {
-        scrnDisplay(errMsg('nocmd'));
+        errMsg('nocmd');
     }
 }
 }

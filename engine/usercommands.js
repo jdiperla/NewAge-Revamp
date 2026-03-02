@@ -114,7 +114,7 @@ function performTravel() {
     var blockReason = GameObjectTravel[OBJECTGLOBAL][DIRECTIONBLOCK][1];
 
     if (!destination) {
-        scrnDisplay(errMsg('noexit'));
+        errMsg('noexit');
         return;
     }
 
