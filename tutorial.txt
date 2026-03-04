@@ -46,3 +46,4 @@ lamp: [
 - `inventory` / `inv` / `i` / `items` / `bag`
 - Add item via script: `addItemToInventory('item_id', 'Display Name')`
 - If an item has `Can be Taken = Yes`, `take <item>` works automatically.
+- `look <direction>` can show directional look text from `GameLocationTravel` (eg: `look east`).

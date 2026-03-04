@@ -83,9 +83,9 @@ var GameLocationTravel = {
     ['northeast block desc', ''],
     ['southwest block desc', ''],
     ['southeast block desc', ''],
-    ['from east look', ''],
-    ['from west look', ''],
-    ['from north look', ''],
+    ['from east look', 'A heavy wooden door leads into the hallway.'],
+    ['from west look', 'The foyer wall is plain and undecorated.'],
+    ['from north look', 'A faded portrait watches you from the wall.'],
     ['from south look', ''],
     ['from up look', ''],
     ['from down look', ''],
@@ -128,7 +128,7 @@ var GameLocationTravel = {
     ['southeast block desc', ''],
     ['from east look', ''],
     ['from west look', ''],
-    ['from north look', ''],
+    ['from north look', 'You spot a shed door to the north.'],
     ['from south look', ''],
     ['from up look', ''],
     ['from down look', ''],
@@ -232,10 +232,10 @@ var GameObjects = {
 var GameObjectCommands = {
   foyer_door: {
     look: function (itemKey) {
-      scrnDisplay(GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
       GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
       GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
       changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
+      scrnDisplay(GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
     }
   },
   shed_door: {

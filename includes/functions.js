@@ -82,6 +82,14 @@ function getItemsInLocation(locationId) {
   return results;
 }
 
+function getAccessibleItems() {
+  var roomItems = getItemsInLocation(OBJECTGLOBAL);
+  var inventoryItems = getItemsInLocation('__inventory__');
+  return roomItems.concat(inventoryItems.filter(function (entry) {
+    return !roomItems.includes(entry);
+  }));
+}
+
 function getItemTokens(item) {
   var tokens = [];
   tokens.push(normalizeToken(item[ITEMNAME] ? item[ITEMNAME][1] : ''));
@@ -98,9 +106,9 @@ function getItemTokens(item) {
   return tokens.filter(Boolean);
 }
 
-function resolveItemInCurrentLocation(inputToken) {
+function resolveAccessibleItem(inputToken) {
   var normalizedInput = normalizeToken(inputToken);
-  var items = getItemsInLocation(OBJECTGLOBAL);
+  var items = getAccessibleItems();
   var matches = [];
 
   items.forEach(function (key) {
@@ -121,6 +129,23 @@ function resolveItemInCurrentLocation(inputToken) {
   }
 
   return { status: 'missing', itemKey: null };
+}
+
+function getLookDirectionField(directionToken) {
+  var token = normalizeToken(directionToken).replace(/_/g, ' ');
+
+  if (GAMEEAST.includes(token)) return OBJECTFROMEASTLOOK;
+  if (GAMEWEST.includes(token)) return OBJECTFROMWESTLOOK;
+  if (GAMENORTH.includes(token)) return OBJECTFROMNORTHLOOK;
+  if (GAMESOUTH.includes(token)) return OBJECTFROMSOUTHLOOK;
+  if (GAMEUP.includes(token)) return OBJECTFROMUPLOOK;
+  if (GAMEDOWN.includes(token)) return OBJECTFROMDOWNLOOK;
+  if (GAMENORTHWEST.includes(token)) return OBJECTFROMNORTHWESTLOOK;
+  if (GAMENORTHEAST.includes(token)) return OBJECTFROMNORTHEASTLOOK;
+  if (GAMESOUTHWEST.includes(token)) return OBJECTFROMSOUTHWESTLOOK;
+  if (GAMESOUTHEAST.includes(token)) return OBJECTFROMSOUTHEASTLOOK;
+
+  return null;
 }
 
 function hasInventoryItem(itemId) {

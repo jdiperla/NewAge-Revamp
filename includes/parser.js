@@ -67,7 +67,24 @@ if (!objectKey) {
     return;
 }
 
-var itemMatch = resolveItemInCurrentLocation(objectKey);
+
+var lookDirectionField = null;
+if (textcmd === 'look') {
+    lookDirectionField = getLookDirectionField(objectKey);
+    if (lookDirectionField !== null) {
+        var travelData = GameLocationTravel[OBJECTGLOBAL] || [];
+        var lookDesc = (travelData[lookDirectionField] && travelData[lookDirectionField][1]) || '';
+        if (lookDesc) {
+            scrnDisplay(lookDesc);
+        }
+        else {
+            scrnDisplay("You don't notice anything special that way.");
+        }
+        return;
+    }
+}
+
+var itemMatch = resolveAccessibleItem(objectKey);
 
 if (itemMatch.status === 'ambiguous') {
     scrnDisplay('Be more specific. More than one matching item is here. Use unique name or alt name.');
