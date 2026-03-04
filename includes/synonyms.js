@@ -28,6 +28,20 @@ var synonyms = {
  'manipulate': ['operate'],
  'work': ['operate'],
 
+ // Using/Interacting
+ 'use': ['use'],
+ 'interact': ['use'],
+ 'handle': ['use'],
+ 'utilize': ['use'],
+ 'wield': ['use'],
+ 'make use': ['use'],
+
+ // Inventory
+ 'inventory': ['inventory'],
+ 'inv': ['inventory'],
+ 'items': ['inventory'],
+ 'bag': ['inventory'],
+
  // Talking
  'talk': ['talk'],
  'speak': ['talk'],

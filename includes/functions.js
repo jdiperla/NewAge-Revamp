@@ -59,3 +59,42 @@ function rtnStringInstances(string, searchinstance) {
 
   return indices.length;
 }
+
+function hasInventoryItem(itemId) {
+ //Checks if the player already has an item in inventory by id.
+  return PLAYERINVENTORY.some(function (entry) {
+    return entry.id === itemId;
+  });
+}
+
+function addItemToInventory(itemId, displayName) {
+ //Scripting helper: add an item to player inventory. Returns true if added, false if already owned.
+  if (!itemId) {
+    return false;
+  }
+
+  if (hasInventoryItem(itemId)) {
+    return false;
+  }
+
+  PLAYERINVENTORY.push({
+    id: itemId,
+    name: displayName || itemId
+  });
+
+  return true;
+}
+
+function showInventory() {
+ //Shows player inventory to screen.
+  if (!PLAYERINVENTORY.length) {
+    scrnDisplay('Inventory: (empty)');
+    return;
+  }
+
+  var itemNames = PLAYERINVENTORY.map(function (item) {
+    return item.name;
+  });
+
+  scrnDisplay('Inventory: ' + itemNames.join(', '));
+}

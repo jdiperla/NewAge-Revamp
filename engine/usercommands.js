@@ -38,8 +38,12 @@ function processcommand(command) {
     let NORTHWEST = GAMENORTHWEST.includes(command);
     let UP = GAMEUP.includes(command);
     let DOWN = GAMEDOWN.includes(command);
+    let INVENTORY = GAMEINVENTORYCMDS.includes(command);
 
-    if (EAST) {
+    if (INVENTORY) {
+        showInventory();
+    }
+    else if (EAST) {
         DIRECTION = OBJECTGOEAST;
         DIRECTIONBLOCK = OBJECTGOEASTBLOCK;
         DIRECTIONBLOCKDESC = OBJECTGOEASTBLOCKDESC;

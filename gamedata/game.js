@@ -200,7 +200,12 @@ var GameRoomObjectCommands = {
     },
     lamp: {
       look: function () {
-        scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
+        if (addItemToInventory('lamp', 'Oil Lamp')) {
+          scrnDisplay('The oil lamp is cold, but there is still fuel inside. You take it.');
+        }
+        else {
+          scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
+        }
       }
     }
   },

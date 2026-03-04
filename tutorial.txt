@@ -27,4 +27,9 @@ To run a simple game:
 
 4) Example game data is now provided in `gamedata/game.js`.
 - Start room: `foyer`
-- Try commands: `east`, `west`, `look lamp`, `look door`
+- Try commands: `look door`, `east`, `north`, `look lamp`, `inventory`
+
+
+Inventory scripting:
+- Use `addItemToInventory('item_id', 'Display Name')` in room handlers/scripts to add an item to player inventory.
+- Use `inventory` / `inv` / `i` / `items` / `bag` to view carried items.

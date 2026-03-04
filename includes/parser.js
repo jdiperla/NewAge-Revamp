@@ -75,6 +75,17 @@ if (textcmd === CMDERROR) {
 }
 else {
     var objectKey = firstObj[0];
+
+    if (!objectKey) {
+        if (textcmd === 'inventory') {
+            showInventory();
+            return;
+        }
+
+        scrnDisplay(errMsg('nocmd'));
+        return;
+    }
+
     var roomHandlers = (globalThis.GameRoomObjectCommands && GameRoomObjectCommands[OBJECTGLOBAL]) || null;
     var roomObjectHandler = roomHandlers && roomHandlers[objectKey] && roomHandlers[objectKey][textcmd];
 
