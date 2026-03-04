@@ -1,7 +1,7 @@
-//Global Variables for game settings
+// Global Variables for game settings
 var GAMENAME = '';
-var OBJECTGLOBAL = '';  //Indicates the current OBJECT loaded.
-var GAMECURPLAYER = ''; //Indicates the current player you control.
+var OBJECTGLOBAL = '';  // Indicates the current location loaded.
+var GAMECURPLAYER = ''; // Indicates the current player you control.
 var GAMESCORE = '0';
 var GLOBALSETCLS = false;
 var GAMEEAST = ['e', 'east', 'go e', 'go east', 'head east', 'head e', 'explore east', 'explore e', 'go eastbound', 'head eastbound', 'go east bound', 'head east bound', 'travel e', 'travel east'];
@@ -15,11 +15,10 @@ var GAMESOUTHWEST = ['sw', 'southwest', 'south west', 'go sw', 'go southwest', '
 var GAMEUP = ['u', 'up', 'go u', 'go up', 'head up', 'head u', 'explore up', 'explore u', 'go upbound', 'head upbound', 'go upward', 'head upward', 'travel u', 'travel upward', 'climb up', 'climb u', 'climb upward'];
 var GAMEDOWN = ['d', 'down', 'go d', 'go down', 'head down', 'head d', 'explore down', 'explore d', 'go downbound', 'head downbound', 'go downward', 'head downward', 'travel d', 'travel downward', 'climb down', 'climb d', 'climb downward'];
 
-
-//Global constiables for Game Object details
+// Location fields for GameLocations
 const OBJECTNAME = 0;
 const OBJECTID = 1;
-const OBJECTTYPE = 2 ;
+const OBJECTTYPE = 2;
 const OBJECTDESCFIRSTTIME = 3;
 const OBJECTDESC = 4;
 const OBJECTSHORTDESC = 5;
@@ -28,25 +27,22 @@ const OBJECTXSIZE = 7;
 const OBJECTYSIZE = 8;
 const OBJECTIMAGE = 9;
 const OBJECTMOVIE = 10;
-const OBJECTPLAYERSTATUS = 11;
-const OBJECTAMOUNT = 12; //How much of the object exists.
-const OBJECTSCORE = 13;
-const OBJECTTICKER = 14; //Ticks off each time the object was entered.
-const OBJECTTICKERUSE = 15; //How many times the object was used.
 
-//Global Const to be used with GameObjectContainer for containing inventory and equiping items.
-const OBJECTCONTAINER = 1;
-const OBJECTEQUIPHEAD = 2;
-const OBJECTEQUIPEYES = 3;
-const OBJECTEQUIPEARS = 4;
-const OBJECTEQUIPMOUTH = 5;
-const OBJECTEQUIPLEFTHAND = 6;
-const OBJECTEQUIPRIGHTHAND = 7;
-const OBJECTEQUIPLEFTFOOT = 8;
-const OBJECTEQUIPRIGHTFOOT = 9;
-const OBJECTEQUIPFRONTTORSO = 10;
+// Item fields for GameObjects
+const ITEMNAME = 0;
+const ITEMID = 1;
+const ITEMLOCATION = 2;
+const ITEMUNIQUENAME = 3;
+const ITEMTYPE = 4;
+const ITEMDESC = 5;
+const ITEMALTNAMES = 6;
+const ITEMALTNAMES2 = 7;
+const ITEMCANTAKE = 8;
+const ITEMSCREENX = 9;
+const ITEMSCREENY = 10;
+const ITEMIMAGE = 11;
 
-//Global constiables for Game Object direction details for obect: GameObjectTravel
+// Direction details for GameLocationTravel
 const OBJECTGOEAST = 1;
 const OBJECTGOWEST = 2;
 const OBJECTGONORTH = 3;
@@ -58,7 +54,7 @@ const OBJECTGONORTHEAST = 8;
 const OBJECTGOSOUTHWEST = 9;
 const OBJECTGOSOUTHEAST = 10;
 
-//Global constiables for Game Object Blocked or locked Locations. Used with GameObjectTravel
+// Blocked or locked locations
 const OBJECTGOEASTBLOCK = 11;
 const OBJECTGOWESTBLOCK = 12;
 const OBJECTGONORTHBLOCK = 13;
@@ -70,7 +66,7 @@ const OBJECTGONORTHEASTBLOCK = 18;
 const OBJECTGOSOUTHWESTBLOCK = 19;
 const OBJECTGOSOUTHEASTBLOCK = 20;
 
-//Global constiables for Game Object Description to specify why the location is locked. Used with GameObjectTravel
+// Block descriptions
 const OBJECTGOEASTBLOCKDESC = 21;
 const OBJECTGOWESTBLOCKDESC = 22;
 const OBJECTGONORTHBLOCKDESC = 23;
@@ -82,7 +78,7 @@ const OBJECTGONORTHEASTBLOCKDESC = 28;
 const OBJECTGOSOUTHWESTBLOCKDESC = 29;
 const OBJECTGOSOUTHEASTBLOCKDESC = 30;
 
-//Global constiables for GameObjectTravel Description when looking at OBJECT from constious directions(EG: Look from southwest at OBJECT)
+// Look descriptions from various directions
 const OBJECTFROMEASTLOOK = 31;
 const OBJECTFROMWESTLOOK = 32;
 const OBJECTFROMNORTHLOOK = 33;
@@ -94,10 +90,6 @@ const OBJECTFROMNORTHEASTLOOK = 38;
 const OBJECTFROMSOUTHWESTLOOK = 39;
 const OBJECTFROMSOUTHEASTLOOK = 40;
 
-//Global for Object events in GameObjectEvents
-const OBJECTONENTER = 1;
-const OBJECTONENTERTIMES = 2;
-
-// Inventory command aliases and player inventory state (actively used).
+// Inventory command aliases and player inventory state
 var GAMEINVENTORYCMDS = ['inventory', 'inv', 'i', 'bag', 'items'];
 var PLAYERINVENTORY = [];

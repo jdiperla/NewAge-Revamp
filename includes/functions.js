@@ -1,4 +1,3 @@
-
 function replaceAll(str, find, replace) {
   return str.split(find).join(replace);
 }
@@ -16,7 +15,6 @@ function scrnDisplay(text2dis) {
   var roomText = document.getElementById('StartRoomText');
 
   if (GLOBALSETCLS === true) {
-   //if globally set to clear the screen for every new text inputted.
     roomText.innerHTML = text2dis;
   }
   else {
@@ -24,30 +22,23 @@ function scrnDisplay(text2dis) {
   }
 }
 
-function findBetween(text, firststring, secondstring){
-  //Function to text between two strings.
+function findBetween(text, firststring, secondstring) {
   var regExString = new RegExp('(?:' + firststring + ')((.[\\s\\S]*))(?:' + secondstring + ')', 'ig');
   var strResult = regExString.exec(text);
-
   return strResult[1];
 }
 
-function strDelimiterCnt(text, delimiter){
- //Function to enter a string and divide it using a delimiter and return the count
+function strDelimiterCnt(text, delimiter) {
   var textsep = text.split(delimiter);
-
   return textsep.length;
 }
 
-function strDelimiter(text, delimiter, pos){
- //Function to enter a string and divide it using a delimiter and return the string at the split position
+function strDelimiter(text, delimiter, pos) {
   var textsep = text.split(delimiter);
-
   return textsep[pos];
 }
 
 function rtnStringInstances(string, searchinstance) {
-//returns the number of times the search appears in the string.
   var escaped = searchinstance.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   var regex = new RegExp(escaped, 'gi');
   var result;
@@ -60,8 +51,79 @@ function rtnStringInstances(string, searchinstance) {
   return indices.length;
 }
 
+function normalizeToken(name) {
+  return (name || '').toLowerCase().trim().replace(/\s+/g, '_');
+}
+
+function splitAltNames(value) {
+  if (!value) {
+    return [];
+  }
+
+  return value.split(',').map(function (entry) {
+    return normalizeToken(entry.replace(/_/g, ' '));
+  }).filter(Boolean);
+}
+
+function getItemsInLocation(locationId) {
+  var results = [];
+
+  for (var objectKey in GameObjects) {
+    if (!Object.prototype.hasOwnProperty.call(GameObjects, objectKey)) {
+      continue;
+    }
+
+    var item = GameObjects[objectKey];
+    if (item[ITEMLOCATION] && item[ITEMLOCATION][1] === locationId) {
+      results.push(objectKey);
+    }
+  }
+
+  return results;
+}
+
+function getItemTokens(item) {
+  var tokens = [];
+  tokens.push(normalizeToken(item[ITEMNAME] ? item[ITEMNAME][1] : ''));
+  tokens.push(normalizeToken(item[ITEMUNIQUENAME] ? item[ITEMUNIQUENAME][1] : ''));
+
+  splitAltNames(item[ITEMALTNAMES] ? item[ITEMALTNAMES][1] : '').forEach(function (entry) {
+    tokens.push(entry);
+  });
+
+  splitAltNames(item[ITEMALTNAMES2] ? item[ITEMALTNAMES2][1] : '').forEach(function (entry) {
+    tokens.push(entry);
+  });
+
+  return tokens.filter(Boolean);
+}
+
+function resolveItemInCurrentLocation(inputToken) {
+  var normalizedInput = normalizeToken(inputToken);
+  var items = getItemsInLocation(OBJECTGLOBAL);
+  var matches = [];
+
+  items.forEach(function (key) {
+    var item = GameObjects[key];
+    var tokens = getItemTokens(item);
+
+    if (tokens.includes(normalizedInput)) {
+      matches.push(key);
+    }
+  });
+
+  if (matches.length === 1) {
+    return { status: 'ok', itemKey: matches[0] };
+  }
+
+  if (matches.length > 1) {
+    return { status: 'ambiguous', itemKey: null };
+  }
+
+  return { status: 'missing', itemKey: null };
+}
+
 function hasInventoryItem(itemId) {
- //Checks if the player already has an item in inventory by id.
   return PLAYERINVENTORY.some(function (entry) {
     return entry.id === itemId;
   });
@@ -86,7 +148,6 @@ function addItemToInventory(itemId, displayName) {
 }
 
 function showInventory() {
- //Shows player inventory to screen.
   if (!PLAYERINVENTORY.length) {
     scrnDisplay('Inventory: (empty)');
     return;
@@ -97,4 +158,23 @@ function showInventory() {
   });
 
   scrnDisplay('Inventory: ' + itemNames.join(', '));
+}
+
+function autoTakeItem(itemKey) {
+  var item = GameObjects[itemKey];
+  var canTake = (item[ITEMCANTAKE] && String(item[ITEMCANTAKE][1]).toLowerCase() === 'yes');
+
+  if (!canTake) {
+    scrnDisplay("You can't take that.");
+    return;
+  }
+
+  if (hasInventoryItem(itemKey)) {
+    scrnDisplay('You already have that.');
+    return;
+  }
+
+  addItemToInventory(itemKey, item[ITEMUNIQUENAME][1] || item[ITEMNAME][1]);
+  item[ITEMLOCATION][1] = '__inventory__';
+  scrnDisplay('Taken.');
 }

@@ -1,5 +1,4 @@
 // Example game data for NewAge-Revamp.
-// Include this file after globals/functions/parser/core/usercommands files.
 
 var IGNOREWORDS = 'the,a,an,to,at';
 var DELIMETERWORDS = 'with,on,using,and';
@@ -7,9 +6,10 @@ var CMDERROR = 'CMDERROR';
 
 GAMENAME = 'Example: The Lantern Hall';
 
-var GameObjects = {
+// Locations/rooms
+var GameLocations = {
   foyer: [
-    ['Room Name', 'Foyer'],
+    ['Location Name', 'Foyer'],
     ['Id', 'foyer'],
     ['Object Type', 'room'],
     ['A dim foyer with a dusty table. A hallway is to the east.', 'A dim foyer with a dusty table. A hallway is to the east.'],
@@ -22,7 +22,7 @@ var GameObjects = {
     ['', '']
   ],
   hall: [
-    ['Room Name', 'Hallway'],
+    ['Location Name', 'Hallway'],
     ['Id', 'hall'],
     ['Object Type', 'room'],
     ['A narrow hallway. Foyer is west. A small shed is north.', 'A narrow hallway. Foyer is west. A small shed is north.'],
@@ -35,7 +35,7 @@ var GameObjects = {
     ['', '']
   ],
   shed: [
-    ['Room Name', 'Shed'],
+    ['Location Name', 'Shed'],
     ['Id', 'shed'],
     ['Object Type', 'room'],
     ['A tool shed with a side door hanging open. Hallway is south.', 'A tool shed with a side door hanging open. Hallway is south.'],
@@ -49,7 +49,8 @@ var GameObjects = {
   ]
 };
 
-var GameObjectTravel = {
+// Location travel graph
+var GameLocationTravel = {
   foyer: [
     ['room', 'foyer'],
     ['east', 'hall'],
@@ -181,39 +182,70 @@ var GameObjectTravel = {
   ]
 };
 
-var GameObjectsCommands = {
-  foyer: {},
-  hall: {},
-  shed: {}
+// Items
+var GameObjects = {
+  foyer_door: [
+    ['Item Name', 'door'],
+    ['Id', 'foyer_door'],
+    ['Location', 'foyer'],
+    ['Unique Name', 'foyer door'],
+    ['Object Type', 'item'],
+    ['Description', 'A sturdy locked wooden door.'],
+    ['Alt names', 'entry door'],
+    ['Alt names 2', 'wooden door'],
+    ['Can be Taken', 'No'],
+    ['Screen X Coordinate', '36'],
+    ['Screen Y Coordinate', '30'],
+    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+  ],
+  shed_door: [
+    ['Item Name', 'door'],
+    ['Id', 'shed_door'],
+    ['Location', 'shed'],
+    ['Unique Name', 'shed door'],
+    ['Object Type', 'item'],
+    ['Description', 'A side door hanging open.'],
+    ['Alt names', 'side door'],
+    ['Alt names 2', 'open door'],
+    ['Can be Taken', 'No'],
+    ['Screen X Coordinate', '28'],
+    ['Screen Y Coordinate', '22'],
+    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+  ],
+  lamp: [
+    ['Item Name', 'lamp'],
+    ['Id', 'lamp'],
+    ['Location', 'foyer'],
+    ['Unique Name', 'foyer lamp'],
+    ['Object Type', 'item'],
+    ['Description', 'An oil lamp.'],
+    ['Alt names', 'hot lamp'],
+    ['Alt names 2', 'oil lamp'],
+    ['Can be Taken', 'Yes'],
+    ['Screen X Coordinate', '36'],
+    ['Screen Y Coordinate', '30'],
+    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+  ]
 };
 
-// Room-specific object command handlers.
-// Format: GameRoomObjectCommands[roomName][objectName][verb]()
-var GameRoomObjectCommands = {
-  foyer: {
-    door: {
-      look: function () {
-        scrnDisplay('The foyer door is locked. You find a spare key nearby and unlock it.');
-        GameObjectTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
-        GameObjectTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
-      }
-    },
-    lamp: {
-      look: function () {
-        if (addItemToInventory('lamp', 'Oil Lamp')) {
-          scrnDisplay('The oil lamp is cold, but there is still fuel inside. You take it.');
-        }
-        else {
-          scrnDisplay('The oil lamp is cold, but there is still fuel inside.');
-        }
-      }
+// Item command handlers (item-specific, not room-specific)
+var GameObjectCommands = {
+  foyer_door: {
+    look: function (itemKey) {
+      scrnDisplay(GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
+      GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
+      GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
+      changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
     }
   },
-  shed: {
-    door: {
-      look: function () {
-        scrnDisplay('This shed door is already unlocked and swings freely.');
-      }
+  shed_door: {
+    look: function (itemKey) {
+      scrnDisplay(GameObjects[itemKey][ITEMDESC][1] + ' It is already unlocked.');
+    }
+  },
+  lamp: {
+    look: function (itemKey) {
+      scrnDisplay(GameObjects[itemKey][ITEMDESC][1]);
     }
   }
 };

@@ -17,19 +17,32 @@ To run a simple game:
 - engine/usercommands.js
 - gamedata/game.js
 
-3) Minimal HTML example:
+3) Main runtime data structures:
+- `GameLocations`: room/location data
+- `GameLocationTravel`: exits/blocked state per location
+- `GameObjects`: room item data (items are separate from locations)
+- `GameObjectCommands`: item-specific command handlers
 
-```html
-<div id="StartRoomLoad"></div>
-<div id="StartRoomText"></div>
-<input type="text" onkeydown="if(event.key==='Enter'){iterateCmds(this.value);this.value='';}">
+4) Item structure example:
+
+```js
+lamp: [
+  ['Item Name', 'lamp'],
+  ['Id', 'lamp'],
+  ['Location', 'foyer'],
+  ['Unique Name', 'foyer lamp'],
+  ['Object Type', 'item'],
+  ['Description', 'An oil lamp.'],
+  ['Alt names', 'hot lamp'],
+  ['Alt names 2', 'oil lamp'],
+  ['Can be Taken', 'Yes']
+]
 ```
 
-4) Example game data is now provided in `gamedata/game.js`.
-- Start room: `foyer`
-- Try commands: `look door`, `east`, `north`, `look lamp`, `inventory`
+5) Change an item field at runtime:
+- `changeObjectValue('lamp', ITEMDESC, 'A lit lamp');`
 
-
-Inventory scripting:
-- Use `addItemToInventory('item_id', 'Display Name')` in room handlers/scripts to add an item to player inventory.
-- Use `inventory` / `inv` / `i` / `items` / `bag` to view carried items.
+6) Inventory:
+- `inventory` / `inv` / `i` / `items` / `bag`
+- Add item via script: `addItemToInventory('item_id', 'Display Name')`
+- If an item has `Can be Taken = Yes`, `take <item>` works automatically.
