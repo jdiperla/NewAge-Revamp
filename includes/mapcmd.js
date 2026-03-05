@@ -1,6 +1,7 @@
 (function () {
   var DEFAULT_MAP_ICON = 'assets/map/default-room.svg';
   var CURRENT_MAP_ICON = 'assets/map/current-room.svg';
+  var FLOOR_COORD_CACHE = {};
 
   function getRoomFloor(roomId) {
     var room = GameLocations[roomId];
@@ -53,14 +54,23 @@
       eligible[roomId] = true;
     }
 
-    if (!eligible[OBJECTGLOBAL]) {
-      return { rooms: [], cols: 1, rows: 1 };
+    var eligibleIds = Object.keys(eligible).sort();
+    if (!eligibleIds.length) {
+      return { rooms: [], cols: 1, rows: 1, connections: [], cellSize: 96 };
     }
 
-    var coords = {};
-    coords[OBJECTGLOBAL] = { x: 0, y: 0 };
-    var queue = [OBJECTGLOBAL];
+    if (!FLOOR_COORD_CACHE[currentFloor]) {
+      FLOOR_COORD_CACHE[currentFloor] = {};
+    }
 
+    var coords = FLOOR_COORD_CACHE[currentFloor];
+    var anchorId = eligibleIds[0];
+    if (!coords[anchorId]) {
+      coords[anchorId] = { x: 0, y: 0 };
+    }
+
+    var queue = [anchorId];
+    var visited = {};
     var checks = [
       OBJECTGOEAST,
       OBJECTGOWEST,
@@ -74,8 +84,13 @@
 
     while (queue.length) {
       var current = queue.shift();
+      if (visited[current]) {
+        continue;
+      }
+      visited[current] = true;
+
       var travel = GameLocationTravel[current];
-      if (!travel) {
+      if (!travel || !coords[current]) {
         continue;
       }
 
@@ -93,55 +108,87 @@
             x: coords[current].x + offset.x,
             y: coords[current].y + offset.y
           };
+        }
+
+        if (!visited[neighbor]) {
           queue.push(neighbor);
         }
       }
     }
 
-    var minX = 0;
-    var maxX = 0;
-    var minY = 0;
-    var maxY = 0;
-    var rooms = [];
-
-    for (var exploredId in eligible) {
-      if (!Object.prototype.hasOwnProperty.call(eligible, exploredId)) {
-        continue;
+    for (var j = 0; j < eligibleIds.length; j++) {
+      if (!coords[eligibleIds[j]]) {
+        coords[eligibleIds[j]] = { x: 0, y: 0 };
       }
-
-      if (!coords[exploredId]) {
-        coords[exploredId] = { x: 0, y: 0 };
-      }
-
-      minX = Math.min(minX, coords[exploredId].x);
-      maxX = Math.max(maxX, coords[exploredId].x);
-      minY = Math.min(minY, coords[exploredId].y);
-      maxY = Math.max(maxY, coords[exploredId].y);
     }
 
-    for (var roomKey in eligible) {
-      if (!Object.prototype.hasOwnProperty.call(eligible, roomKey)) {
-        continue;
-      }
+    var minX = Infinity;
+    var maxX = -Infinity;
+    var minY = Infinity;
+    var maxY = -Infinity;
 
+    eligibleIds.forEach(function (rid) {
+      minX = Math.min(minX, coords[rid].x);
+      maxX = Math.max(maxX, coords[rid].x);
+      minY = Math.min(minY, coords[rid].y);
+      maxY = Math.max(maxY, coords[rid].y);
+    });
+
+    var rooms = eligibleIds.map(function (roomKey) {
       var label = GameLocations[roomKey][OBJECTNAME] ? GameLocations[roomKey][OBJECTNAME][1] : roomKey;
       var isCurrent = roomKey === OBJECTGLOBAL;
-      var point = coords[roomKey] || { x: 0, y: 0 };
+      var point = coords[roomKey];
 
-      rooms.push({
+      return {
         id: roomKey,
         label: label,
         icon: getMapIcon(roomKey, isCurrent),
         current: isCurrent,
         col: (point.x - minX) + 1,
         row: (point.y - minY) + 1
+      };
+    });
+
+    var roomById = {};
+    rooms.forEach(function (room) { roomById[room.id] = room; });
+    var connections = [];
+    var seenConn = {};
+
+    eligibleIds.forEach(function (fromRoom) {
+      var travel = GameLocationTravel[fromRoom];
+      if (!travel) {
+        return;
+      }
+
+      checks.forEach(function (dir) {
+        var toRoom = (travel[dir] && travel[dir][1]) || '';
+        if (!toRoom || !eligible[toRoom]) {
+          return;
+        }
+
+        var key = [fromRoom, toRoom].sort().join('::');
+        if (seenConn[key]) {
+          return;
+        }
+        seenConn[key] = true;
+
+        if (!roomById[fromRoom] || !roomById[toRoom]) {
+          return;
+        }
+
+        connections.push({
+          from: { col: roomById[fromRoom].col, row: roomById[fromRoom].row },
+          to: { col: roomById[toRoom].col, row: roomById[toRoom].row }
+        });
       });
-    }
+    });
 
     return {
       rooms: rooms,
       cols: (maxX - minX) + 1,
-      rows: (maxY - minY) + 1
+      rows: (maxY - minY) + 1,
+      connections: connections,
+      cellSize: 96
     };
   }
 
