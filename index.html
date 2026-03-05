@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewAge Revamp - Example Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#111; color:#eee; margin:0; }
+    .wrap { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    #StartRoomLoad { min-height: 240px; background:#222; display:flex; align-items:center; justify-content:center; }
+    #StartRoomLoad img, #StartRoomLoad video { max-width:100%; height:auto; display:block; }
+    #StartRoomText { margin-top: 12px; min-height: 72px; padding:12px; background:#1b1b1b; border:1px solid #333; }
+    .cmd { margin-top:12px; display:flex; gap:8px; }
+    input { flex:1; padding:10px; background:#181818; color:#fff; border:1px solid #444; }
+    button { padding:10px 14px; background:#2d6cdf; color:#fff; border:0; cursor:pointer; }
+    .help { font-size: 12px; color:#bbb; margin-top:8px; }
+
+    .room-item-hotspot { border:1px solid #78aaff; background:rgba(20,40,80,.75); color:#fff; font-size:11px; padding:2px 6px; border-radius:10px; cursor:pointer; }
+    .room-item-hotspot:hover { background:rgba(45,108,223,.95); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>NewAge Revamp - Example Game</h1>
+    <div id="StartRoomLoad"></div>
+    <div id="StartRoomText"></div>
+
+    <div class="cmd">
+      <input id="cmdInput" type="text" placeholder="Type a command (e.g. look door, take lamp, inventory)" />
+      <button id="runBtn" type="button">Run</button>
+    </div>
+    <div class="help">Try: <code>look foyer door</code>, <code>east</code>, <code>north</code>, <code>look shed door</code>, <code>take lamp</code>, <code>inventory</code>.</div>
+  </div>
+
+  <!-- Load engine/include files directly -->
+  <script src="includes/globals.js"></script>
+  <script src="includes/globalmessages.js"></script>
+  <script src="includes/functions.js"></script>
+  <script src="includes/synonyms.js"></script>
+  <script src="includes/parser.js"></script>
+  <script src="engine/core.js"></script>
+  <script src="engine/usercommands.js"></script>
+  <script src="gamedata/game.js"></script>
+
+  <script>
+    (function bootUi() {
+      const input = document.getElementById('cmdInput');
+      const runBtn = document.getElementById('runBtn');
+
+      function runCommand() {
+        const value = input.value.trim();
+        if (!value) return;
+        iterateCmds(value);
+        input.value = '';
+        input.focus();
+      }
+
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          runCommand();
+        }
+      });
+
+      runBtn.addEventListener('click', runCommand);
+      input.focus();
+    })();
+  </script>
+</body>
+</html>

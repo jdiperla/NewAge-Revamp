@@ -30,3 +30,6 @@ NewAge is an interactive fiction engine creator that features a system that will
     *Inventory windows can be graphical, text based, scrollable or in different shapes using CSS.
     *Inventory Windows can have animated icons, background images.
     *Inventory Windows can have property groups(EG: Magic, Normal, weapons, etc)
+
+
+Update: tiny maintenance edit to enable PR re-upload.
