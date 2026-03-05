@@ -13,13 +13,24 @@ function errMsg(errorglobal) {
 function scrnDisplay(text2dis) {
  //Function that writes to the screen.
   var roomText = document.getElementById('StartRoomText');
+  if (!roomText) {
+    return;
+  }
+
+  var output = String(text2dis || '');
+  output = output.replace(/\/n/g, '<br>').replace(/\n/g, '<br>');
 
   if (GLOBALSETCLS === true) {
-    roomText.innerHTML = text2dis;
+    roomText.innerHTML = output;
   }
   else {
-    roomText.innerHTML += text2dis;
+    if (roomText.innerHTML && !roomText.innerHTML.endsWith('<br>')) {
+      roomText.innerHTML += '<br>';
+    }
+    roomText.innerHTML += output;
   }
+
+  roomText.scrollTop = roomText.scrollHeight;
 }
 
 function findBetween(text, firststring, secondstring) {
@@ -201,5 +212,8 @@ function autoTakeItem(itemKey) {
 
   addItemToInventory(itemKey, item[ITEMUNIQUENAME][1] || item[ITEMNAME][1]);
   item[ITEMLOCATION][1] = '__inventory__';
+  if (typeof renderLocationItems === 'function') {
+    renderLocationItems();
+  }
   scrnDisplay('Taken.');
 }

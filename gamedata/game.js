@@ -190,13 +190,14 @@ var GameObjects = {
     ['Location', 'foyer'],
     ['Unique Name', 'foyer door'],
     ['Object Type', 'item'],
-    ['Description', 'A sturdy locked wooden door. You find a spare key nearby and unlock it.'],
+    ['Description', 'A sturdy locked wooden door.'],
     ['Alt names', 'entry door'],
     ['Alt names 2', 'wooden door'],
     ['Can be Taken', 'No'],
     ['Screen X Coordinate', '36'],
     ['Screen Y Coordinate', '30'],
-    ['Image Location', 'https://fastly.picsum.photos/id/284/200/300.jpg?hmac=fvS2Lhb3_MeGZNH-d1zR5710oX4Z8XcKYbFeM3p-B6k']
+    ['Image Location', 'https://picsum.photos/id/1067/640/360'],
+    ['Clickable', 'Yes']
   ],
   shed_door: [
     ['Item Name', 'door'],
@@ -210,7 +211,8 @@ var GameObjects = {
     ['Can be Taken', 'No'],
     ['Screen X Coordinate', '28'],
     ['Screen Y Coordinate', '22'],
-    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+    ['Image Location', 'https://picsum.photos/id/1067/640/360'],
+    ['Clickable', 'No']
   ],
   lamp: [
     ['Item Name', 'lamp'],
@@ -224,7 +226,8 @@ var GameObjects = {
     ['Can be Taken', 'Yes'],
     ['Screen X Coordinate', '36'],
     ['Screen Y Coordinate', '30'],
-    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+    ['Image Location', 'https://picsum.photos/id/1067/640/360'],
+    ['Clickable', 'Yes']
   ]
 };
 
@@ -232,10 +235,16 @@ var GameObjects = {
 var GameObjectCommands = {
   foyer_door: {
     look: function (itemKey) {
-      scrnDisplay('/n' + GameObjects[itemKey][ITEMDESC][1]);
       GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
       GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
-      changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
+      var changed = changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
+
+      if (changed) {
+        scrnDisplay('Door updated: ' + GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
+      }
+      else {
+        scrnDisplay('The door unlocks, but failed to update stored description.');
+      }
     }
   },
   shed_door: {

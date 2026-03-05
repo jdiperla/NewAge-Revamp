@@ -31,22 +31,32 @@ function renderLocationItems() {
 
     var label = item[ITEMNAME] ? item[ITEMNAME][1] : itemKey;
     var uniqueName = item[ITEMUNIQUENAME] ? item[ITEMUNIQUENAME][1] : label;
+    var imageSrc = item[ITEMIMAGE] ? item[ITEMIMAGE][1] : '';
+    var clickableRaw = item[ITEMCLICKABLE] ? item[ITEMCLICKABLE][1] : 'yes';
+    var isClickable = String(clickableRaw).toLowerCase() !== 'no' && String(clickableRaw).toLowerCase() !== 'false' && String(clickableRaw) !== '0';
 
-    var marker = document.createElement('button');
+    var marker = document.createElement('div');
     marker.className = 'room-item-hotspot';
     marker.style.position = 'absolute';
     marker.style.left = x + '%';
     marker.style.top = y + '%';
     marker.style.transform = 'translate(-50%, -50%)';
-    marker.textContent = label;
     marker.title = uniqueName;
-    marker.type = 'button';
 
-    marker.addEventListener('click', function (event) {
-      if (typeof iterateCmds === 'function') {
-        iterateCmds('look ' + event.currentTarget.title);
-      }
-    });
+    var icon = document.createElement('img');
+    icon.className = 'room-item-hotspot-image';
+    icon.alt = label;
+    icon.src = imageSrc || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    marker.appendChild(icon);
+
+    if (isClickable) {
+      marker.classList.add('clickable');
+      marker.addEventListener('click', function (event) {
+        if (typeof iterateCmds === 'function') {
+          iterateCmds('look ' + event.currentTarget.title);
+        }
+      });
+    }
 
     roomLoad.appendChild(marker);
   }
@@ -64,7 +74,9 @@ function LoadRoom(roomname) {
     document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
   }
 
-  document.getElementById('StartRoomText').innerHTML = GameLocations[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1];
+  GLOBALSETCLS = true;
+  scrnDisplay(GameLocations[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1]);
+  GLOBALSETCLS = false;
   renderLocationItems();
 }
 

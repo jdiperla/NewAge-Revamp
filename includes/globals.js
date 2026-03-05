@@ -41,6 +41,7 @@ const ITEMCANTAKE = 8;
 const ITEMSCREENX = 9;
 const ITEMSCREENY = 10;
 const ITEMIMAGE = 11;
+const ITEMCLICKABLE = 12;
 
 // Direction details for GameLocationTravel
 const OBJECTGOEAST = 1;
