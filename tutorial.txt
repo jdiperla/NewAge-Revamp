@@ -1,49 +1,345 @@
-Initial Tutorial
+# NewAge-Revamp Tutorial: Build a Complete Game
 
-To run a simple game:
+This tutorial walks you through creating a game from scratch with:
+- rooms and travel,
+- items,
+- custom scripted commands,
+- runtime data changes,
+- inventory,
+- and useful engine helper functions.
 
-1) Your HTML must contain:
-- a div with id `StartRoomLoad` (room image/video)
-- a div with id `StartRoomText` (narrative text)
-- an input that calls `iterateCmds(value)`.
+---
 
-2) Include files in this order:
-- includes/globals.js
-- includes/globalmessages.js
-- includes/functions.js
-- includes/synonyms.js
-- includes/parser.js
-- engine/core.js
-- engine/usercommands.js
-- gamedata/game.js
+## 1) Project structure and required files
 
-3) Main runtime data structures:
-- `GameLocations`: room/location data
-- `GameLocationTravel`: exits/blocked state per location
-- `GameObjects`: room item data (items are separate from locations)
-- `GameObjectCommands`: item-specific command handlers
+At minimum, your project should use these files:
 
-4) Item structure example:
+- `includes/globals.js`
+- `includes/globalmessages.js`
+- `includes/functions.js`
+- `includes/synonyms.js`
+- `includes/parser.js`
+- `engine/core.js`
+- `engine/usercommands.js`
+- `gamedata/game.js` (your game content)
 
-```js
-lamp: [
-  ['Item Name', 'lamp'],
-  ['Id', 'lamp'],
-  ['Location', 'foyer'],
-  ['Unique Name', 'foyer lamp'],
-  ['Object Type', 'item'],
-  ['Description', 'An oil lamp.'],
-  ['Alt names', 'hot lamp'],
-  ['Alt names 2', 'oil lamp'],
-  ['Can be Taken', 'Yes']
-]
+---
+
+## 2) HTML shell required by the engine
+
+Your HTML must include:
+- `#StartRoomLoad` (room image/video + item overlays)
+- `#StartRoomText` (text output area)
+- an input/button that sends player text to `iterateCmds(...)`
+
+Minimal example:
+
+```html
+<div id="StartRoomLoad"></div>
+<div id="StartRoomText"></div>
+<input id="cmdInput" />
+<button onclick="iterateCmds(document.getElementById('cmdInput').value)">Run</button>
 ```
 
-5) Change an item field at runtime:
-- `changeObjectValue('lamp', ITEMDESC, 'A lit lamp');`
+Include scripts in this order:
 
-6) Inventory:
-- `inventory` / `inv` / `i` / `items` / `bag`
-- Add item via script: `addItemToInventory('item_id', 'Display Name')`
-- If an item has `Can be Taken = Yes`, `take <item>` works automatically.
-- `look <direction>` can show directional look text from `GameLocationTravel` (eg: `look east`).
+```html
+<script src="includes/globals.js"></script>
+<script src="includes/globalmessages.js"></script>
+<script src="includes/functions.js"></script>
+<script src="includes/synonyms.js"></script>
+<script src="includes/parser.js"></script>
+<script src="engine/core.js"></script>
+<script src="engine/usercommands.js"></script>
+<script src="gamedata/game.js"></script>
+```
+
+---
+
+## 3) Core data model
+
+### A) `GameLocations`
+Room/location metadata.
+
+Each location is an array where indexes match constants from `includes/globals.js`:
+- `OBJECTNAME`, `OBJECTID`, `OBJECTTYPE`, `OBJECTDESCFIRSTTIME`, `OBJECTDESC`, etc.
+
+Example:
+
+```js
+var GameLocations = {
+  foyer: [
+    ['Location Name', 'Foyer'],
+    ['Id', 'foyer'],
+    ['Object Type', 'room'],
+    ['You are in a dim foyer.', 'You are in a dim foyer.'],
+    ['A dim foyer.', 'A dim foyer.'],
+    ['Alt names', 'entry'],
+    ['Alt names 2', 'front hall'],
+    ['640', '640'],
+    ['360', '360'],
+    ['https://example.com/foyer.jpg', 'https://example.com/foyer.jpg'],
+    ['', '']
+  ]
+};
+```
+
+### B) `GameLocationTravel`
+Directional exits and directional text.
+
+This controls:
+- destination by direction (`east`, `west`, etc.)
+- block flags (`east block`, etc.)
+- block description text
+- `look <direction>` descriptions
+
+Example (partial):
+
+```js
+var GameLocationTravel = {
+  foyer: [
+    ['room', 'foyer'],
+    ['east', 'hall'],
+    ['west', ''],
+    // ...
+    ['east block', 'blocked'],
+    // ...
+    ['east block desc', 'The foyer door is locked.'],
+    // ...
+    ['from east look', 'A sturdy wooden door.']
+  ]
+};
+```
+
+### C) `GameObjects`
+Items and interactable objects.
+
+Important item fields:
+- name/id/location/unique name
+- description
+- alt names
+- can-take flag
+- on-screen coordinates
+- image URL
+- clickable flag
+
+Example:
+
+```js
+var GameObjects = {
+  lamp: [
+    ['Item Name', 'lamp'],
+    ['Id', 'lamp'],
+    ['Location', 'foyer'],
+    ['Unique Name', 'foyer lamp'],
+    ['Object Type', 'item'],
+    ['Description', 'An oil lamp.'],
+    ['Alt names', 'hot lamp'],
+    ['Alt names 2', 'oil lamp'],
+    ['Can be Taken', 'Yes'],
+    ['Screen X Coordinate', '96'],
+    ['Screen Y Coordinate', '30'],
+    ['Image Location', 'https://example.com/lamp.png'],
+    ['Clickable', 'Yes']
+  ]
+};
+```
+
+### D) `GameObjectCommands`
+Custom item scripting handlers.
+
+Keys are item IDs, then command names (`look`, `open`, `use`, etc.)
+
+```js
+var GameObjectCommands = {
+  lamp: {
+    look: function (itemKey) {
+      scrnDisplay(GameObjects[itemKey][ITEMDESC][1]);
+    }
+  }
+};
+```
+
+---
+
+## 4) Booting the game
+
+At the end of `gamedata/game.js`:
+
+```js
+window.addEventListener('load', function () {
+  LoadRoom('foyer');
+});
+```
+
+`LoadRoom(locationId)`:
+- sets current location,
+- renders image/video,
+- writes room text,
+- renders room item overlays.
+
+---
+
+## 5) Command flow and parsing
+
+- Player input goes into `iterateCmds(...)`.
+- Multiple commands can be split by words/punctuation (example: `look lamp. take lamp`).
+- Direction commands are handled by travel logic (`north`, `east`, etc.).
+- Other commands are parsed by `ParsePlayerInput(...)`.
+- Item resolution checks both:
+  - items in the current room,
+  - items in inventory.
+
+So item commands can continue to work even after taking the item.
+
+---
+
+## 6) Built-in inventory behavior
+
+Supported commands include:
+- `inventory`, `inv`, `i`, `bag`, `items`
+
+Helpers:
+- `addItemToInventory(itemId, displayName)`
+- `hasInventoryItem(itemId)`
+- `showInventory()`
+- `autoTakeItem(itemKey)` (called automatically for `take <item>` when item is takeable)
+
+If `Can be Taken` is set to `Yes`, `take <item>` works even without writing a custom `take` handler.
+
+---
+
+## 7) Runtime scripting helpers (important)
+
+### Change location data
+
+```js
+changeLocationValue('foyer', OBJECTDESC, 'A now-bright foyer.');
+```
+
+### Change object/item data
+
+```js
+changeObjectValue('lamp', ITEMDESC, 'A lit lamp.');
+```
+
+### Clear the text output explicitly
+
+```js
+clrScreen();
+```
+
+### Write output text
+
+```js
+scrnDisplay('Hello player');
+scrnDisplay('/nA new line via /n token');
+```
+
+`/n` and newline characters are converted to line breaks.
+
+---
+
+## 8) Common scripting pattern: lock/unlock travel
+
+Example: looking at a door unlocks east travel.
+
+```js
+foyer_door: {
+  look: function (itemKey) {
+    scrnDisplay('/n' + GameObjects[itemKey][ITEMDESC][1]);
+
+    // Unlock east exit from foyer
+    GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
+    GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
+
+    // Update door description
+    changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
+  }
+}
+```
+
+---
+
+## 9) Directional look text (`look east`, etc.)
+
+Add descriptions to travel data fields such as:
+- `OBJECTFROMEASTLOOK`
+- `OBJECTFROMWESTLOOK`
+- ...and other directions.
+
+Then `look east` automatically prints that text.
+
+---
+
+## 10) Item overlays (graphics on room image)
+
+Item overlays appear when:
+- item location matches current room,
+- X or Y coordinate is above 0.
+
+Fields used:
+- `ITEMSCREENX`, `ITEMSCREENY`
+- `ITEMIMAGE`
+- `ITEMCLICKABLE`
+
+Clickable behavior:
+- `Clickable = Yes` → clicking triggers `look <unique name>`
+- `Clickable = No` → image displays but click is disabled.
+
+When an item is taken:
+- its location changes to `__inventory__`
+- overlay is re-rendered and removed from the room.
+
+---
+
+## 11) Synonyms and custom verbs
+
+`synonyms.js` maps words/phrases to canonical command IDs.
+
+Example concept:
+- `examine`, `inspect` -> `look`
+- `grab` -> `take`
+
+To add custom verbs:
+1. add synonym mapping,
+2. add handler in `GameObjectCommands[itemKey][verb]`.
+
+---
+
+## 12) Recommended workflow for building a new game
+
+1. Create rooms in `GameLocations`.
+2. Connect them via `GameLocationTravel`.
+3. Add items in `GameObjects` with unique names and alt names.
+4. Add item scripts in `GameObjectCommands` for interactions.
+5. Use `changeObjectValue` / `changeLocationValue` to evolve state.
+6. Test travel blocks, item lookup ambiguity, and inventory behavior.
+7. Use `clrScreen()` only when your story/UI specifically needs a text reset.
+
+---
+
+## 13) Debug tips
+
+- If movement fails unexpectedly:
+  - check destination field,
+  - check block and block-desc fields in `GameLocationTravel`.
+- If item command does not run:
+  - verify item token (name, unique name, alt names),
+  - verify handler exists in `GameObjectCommands`.
+- If multiple items share similar names:
+  - use unique names to disambiguate.
+
+---
+
+## 14) Minimal complete `gamedata/game.js` checklist
+
+- [ ] `IGNOREWORDS`, `DELIMETERWORDS`, `CMDERROR`
+- [ ] `GAMENAME`
+- [ ] `GameLocations`
+- [ ] `GameLocationTravel`
+- [ ] `GameObjects`
+- [ ] `GameObjectCommands`
+- [ ] `window.addEventListener('load', ...)` calling `LoadRoom(startRoom)`
+
+You now have the full scripting surface to build puzzle logic, stateful rooms, and custom interactions.
