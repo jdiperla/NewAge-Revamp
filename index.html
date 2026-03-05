@@ -28,6 +28,8 @@
     <div id="StartRoomLoad"></div>
     <div id="StartRoomText"></div>
 
+    <div id="gameNav"></div>
+
     <div class="cmd">
       <input id="cmdInput" type="text" placeholder="Type a command (e.g. look door, take lamp, inventory)" />
       <button id="runBtn" type="button">Run</button>
@@ -43,6 +45,7 @@
   <script src="includes/parser.js"></script>
   <script src="engine/core.js"></script>
   <script src="engine/usercommands.js"></script>
+  <script src="includes/compass.js"></script>
   <script src="gamedata/game.js"></script>
 
   <script>
@@ -65,6 +68,10 @@
       });
 
       runBtn.addEventListener('click', runCommand);
+      if (typeof initGameCompass === 'function') {
+        initGameCompass();
+      }
+
       input.focus();
     })();
   </script>
