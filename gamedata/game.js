@@ -196,7 +196,7 @@ var GameObjects = {
     ['Can be Taken', 'No'],
     ['Screen X Coordinate', '36'],
     ['Screen Y Coordinate', '30'],
-    ['Image Location', 'https://picsum.photos/id/1067/640/360']
+    ['Image Location', 'https://fastly.picsum.photos/id/284/200/300.jpg?hmac=fvS2Lhb3_MeGZNH-d1zR5710oX4Z8XcKYbFeM3p-B6k']
   ],
   shed_door: [
     ['Item Name', 'door'],
