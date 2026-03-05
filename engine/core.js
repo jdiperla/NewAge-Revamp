@@ -78,9 +78,7 @@ function LoadRoom(roomname) {
     document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
   }
 
-  GLOBALSETCLS = true;
   scrnDisplay(GameLocations[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1]);
-  GLOBALSETCLS = false;
   renderLocationItems();
 }
 

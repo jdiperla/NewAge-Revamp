@@ -33,6 +33,17 @@ function scrnDisplay(text2dis) {
   roomText.scrollTop = roomText.scrollHeight;
 }
 
+function clrScreen() {
+ //Script helper to clear the game text window on demand.
+  var roomText = document.getElementById('StartRoomText');
+  if (!roomText) {
+    return;
+  }
+
+  roomText.innerHTML = '';
+  roomText.scrollTop = 0;
+}
+
 function findBetween(text, firststring, secondstring) {
   var regExString = new RegExp('(?:' + firststring + ')((.[\\s\\S]*))(?:' + secondstring + ')', 'ig');
   var strResult = regExString.exec(text);
