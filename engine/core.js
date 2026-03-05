@@ -92,6 +92,7 @@ function LoadRoom(roomname) {
 //Loads the specified room and sets the global setting. If a movie file is specified, the engine will play the movie file first. Once the movie is done, it will load the room image.
 
   OBJECTGLOBAL = roomname;
+  EXPLOREDROOMS[roomname] = true;
 
   if (GameLocations[OBJECTGLOBAL][OBJECTMOVIE][1] !== '') {
     document.getElementById('StartRoomLoad').innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay><source src="' + GameLocations[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';

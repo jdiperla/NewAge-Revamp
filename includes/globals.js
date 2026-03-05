@@ -27,6 +27,8 @@ const OBJECTXSIZE = 7;
 const OBJECTYSIZE = 8;
 const OBJECTIMAGE = 9;
 const OBJECTMOVIE = 10;
+const OBJECTMAPICON = 11;
+const OBJECTFLOOR = 12;
 
 // Item fields for GameObjects
 const ITEMNAME = 0;
@@ -94,3 +96,4 @@ const OBJECTFROMSOUTHEASTLOOK = 40;
 // Inventory command aliases and player inventory state
 var GAMEINVENTORYCMDS = ['inventory', 'inv', 'i', 'bag', 'items'];
 var PLAYERINVENTORY = [];
+var EXPLOREDROOMS = {};

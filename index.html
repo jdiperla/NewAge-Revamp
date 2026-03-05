@@ -29,6 +29,7 @@
     <div id="StartRoomText"></div>
 
     <div id="gameNav"></div>
+    <div id="gameMap"></div>
 
     <div class="cmd">
       <input id="cmdInput" type="text" placeholder="Type a command (e.g. look door, take lamp, inventory)" />
@@ -45,7 +46,10 @@
   <script src="includes/parser.js"></script>
   <script src="engine/core.js"></script>
   <script src="engine/usercommands.js"></script>
-  <script src="includes/compass.js"></script>
+  <script src="includes/compasstemplate.js"></script>
+  <script src="includes/compasscmd.js"></script>
+  <script src="includes/maptemplate.js"></script>
+  <script src="includes/mapcmd.js"></script>
   <script src="gamedata/game.js"></script>
 
   <script>
@@ -70,6 +74,9 @@
       runBtn.addEventListener('click', runCommand);
       if (typeof initGameCompass === 'function') {
         initGameCompass();
+      }
+      if (typeof initGameMap === 'function') {
+        initGameMap();
       }
 
       input.focus();

@@ -19,7 +19,9 @@ var GameLocations = {
     ['640', '640'],
     ['360', '360'],
     ['https://picsum.photos/id/1018/640/360', 'https://picsum.photos/id/1018/640/360'],
-    ['', '']
+    ['', ''],
+    ['Map Icon', 'https://picsum.photos/id/103/64/64'],
+    ['Floor', '0']
   ],
   hall: [
     ['Location Name', 'Hallway'],
@@ -32,7 +34,9 @@ var GameLocations = {
     ['640', '640'],
     ['360', '360'],
     ['https://picsum.photos/id/1025/640/360', 'https://picsum.photos/id/1025/640/360'],
-    ['', '']
+    ['', ''],
+    ['Map Icon', 'https://picsum.photos/id/104/64/64'],
+    ['Floor', '0']
   ],
   shed: [
     ['Location Name', 'Shed'],
@@ -45,7 +49,9 @@ var GameLocations = {
     ['640', '640'],
     ['360', '360'],
     ['https://picsum.photos/id/1067/640/360', 'https://picsum.photos/id/1067/640/360'],
-    ['', '']
+    ['', ''],
+    ['Map Icon', ''],
+    ['Floor', '0']
   ]
 };
 
