@@ -232,7 +232,7 @@ var GameObjects = {
 var GameObjectCommands = {
   foyer_door: {
     look: function (itemKey) {
-      scrnDisplay('Door updated: ' + GameObjects[itemKey][ITEMDESC][1]
+      scrnDisplay('/n' + GameObjects[itemKey][ITEMDESC][1]);
       GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
       GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
       changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
