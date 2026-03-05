@@ -196,7 +196,7 @@ var GameObjects = {
     ['Can be Taken', 'No'],
     ['Screen X Coordinate', '36'],
     ['Screen Y Coordinate', '30'],
-    ['Image Location', 'https://picsum.photos/id/1067/640/360'],
+    ['Image Location', 'https://picsum.photos/id/1069/640/360'],
     ['Clickable', 'Yes']
   ],
   shed_door: [
@@ -211,7 +211,7 @@ var GameObjects = {
     ['Can be Taken', 'No'],
     ['Screen X Coordinate', '28'],
     ['Screen Y Coordinate', '22'],
-    ['Image Location', 'https://picsum.photos/id/1067/640/360'],
+    ['Image Location', 'https://picsum.photos/id/1169/640/360'],
     ['Clickable', 'No']
   ],
   lamp: [
@@ -224,7 +224,7 @@ var GameObjects = {
     ['Alt names', 'hot lamp'],
     ['Alt names 2', 'oil lamp'],
     ['Can be Taken', 'Yes'],
-    ['Screen X Coordinate', '36'],
+    ['Screen X Coordinate', '96'],
     ['Screen Y Coordinate', '30'],
     ['Image Location', 'https://picsum.photos/id/1067/640/360'],
     ['Clickable', 'Yes']
@@ -235,17 +235,11 @@ var GameObjects = {
 var GameObjectCommands = {
   foyer_door: {
     look: function (itemKey) {
+      scrnDisplay('/n' + GameObjects[itemKey][ITEMDESC][1]);
       GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
       GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
-      var changed = changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
-
-      if (changed) {
-        scrnDisplay('Door updated: ' + GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
+      changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
       }
-      else {
-        scrnDisplay('The door unlocks, but failed to update stored description.');
-      }
-    }
   },
   shed_door: {
     look: function (itemKey) {

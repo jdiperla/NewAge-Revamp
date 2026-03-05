@@ -57,6 +57,10 @@ function renderLocationItems() {
         }
       });
     }
+    else {
+      marker.classList.add('non-clickable');
+      marker.style.pointerEvents = 'none';
+    }
 
     roomLoad.appendChild(marker);
   }
