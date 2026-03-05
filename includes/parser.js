@@ -4,7 +4,10 @@ function ParsePlayerInput(myIgnoredWords, delimeterWords, consoleString) {
 var coldelwords = [];
 var coligwords = [];
 
-consoleString = consoleString.toLowerCase();
+consoleString = consoleString.toLowerCase().trim();
+if (runCustomTextCommand(consoleString)) {
+    return;
+}
 var phrasedirect = '';
 var onewordcmd = consoleString.split(' ').slice(0, 1).join(' ');
 var twowordcmd = consoleString.split(' ').slice(0, 2).join(' ');

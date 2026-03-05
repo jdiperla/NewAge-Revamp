@@ -153,6 +153,45 @@ function resolveAccessibleItem(inputToken) {
   return { status: 'missing', itemKey: null };
 }
 
+function runCustomTextCommand(inputText) {
+ //Allows global free-text commands that are not tied to a room or item.
+  if (typeof GlobalTextCommands !== 'object' || GlobalTextCommands === null) {
+    return false;
+  }
+
+  var normalized = normalizeToken(inputText || '').replace(/_/g, ' ');
+  if (!normalized) {
+    return false;
+  }
+
+  var cmd = GlobalTextCommands[normalized];
+  if (typeof cmd === 'undefined') {
+    return false;
+  }
+
+  if (typeof cmd === 'function') {
+    cmd(normalized);
+    return true;
+  }
+
+  if (typeof cmd === 'string') {
+    scrnDisplay(cmd);
+    return true;
+  }
+
+  if (cmd && typeof cmd.text === 'string') {
+    scrnDisplay(cmd.text);
+    return true;
+  }
+
+  if (cmd && typeof cmd.run === 'function') {
+    cmd.run(normalized);
+    return true;
+  }
+
+  return false;
+}
+
 function getLookDirectionField(directionToken) {
   var token = normalizeToken(directionToken).replace(/_/g, ' ');
 

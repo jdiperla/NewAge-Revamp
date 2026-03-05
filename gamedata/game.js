@@ -4,6 +4,14 @@ var IGNOREWORDS = 'the,a,an,to,at';
 var DELIMETERWORDS = 'with,on,using,and';
 var CMDERROR = 'CMDERROR';
 
+// Optional global free-text commands (not tied to room/item).
+var GlobalTextCommands = {
+  'sing a song': '/n♪ You sing a little lantern song in the dark hallway. ♪',
+  'hum': function () {
+    scrnDisplay('/nYou hum softly to yourself.');
+  }
+};
+
 GAMENAME = 'Example: The Lantern Hall';
 
 // Locations/rooms
