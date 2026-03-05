@@ -190,7 +190,7 @@ var GameObjects = {
     ['Location', 'foyer'],
     ['Unique Name', 'foyer door'],
     ['Object Type', 'item'],
-    ['Description', 'A sturdy locked wooden door.'],
+    ['Description', 'A sturdy locked wooden door. You find a spare key nearby and unlock it.'],
     ['Alt names', 'entry door'],
     ['Alt names 2', 'wooden door'],
     ['Can be Taken', 'No'],
@@ -234,14 +234,7 @@ var GameObjectCommands = {
     look: function (itemKey) {
       GameLocationTravel.foyer[OBJECTGOEASTBLOCK][1] = '';
       GameLocationTravel.foyer[OBJECTGOEASTBLOCKDESC][1] = '';
-      var changed = changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
-
-      if (changed) {
-        scrnDisplay('Door updated: ' + GameObjects[itemKey][ITEMDESC][1] + ' You find a spare key nearby and unlock it.');
-      }
-      else {
-        scrnDisplay('The door unlocks, but failed to update stored description.');
-      }
+      changeObjectValue(itemKey, ITEMDESC, 'A sturdy unlocked wooden door.');
     }
   },
   shed_door: {
