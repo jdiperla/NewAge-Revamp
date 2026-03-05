@@ -12,6 +12,21 @@ function getRoomSurfaceElement() {
   return null;
 }
 
+function getRoomItemMarkerSize(surface) {
+  var baseWidth = 640;
+  var scale = surface.getBoundingClientRect().width / baseWidth;
+  var size = Math.round(48 * scale);
+
+  if (size < 20) {
+    size = 20;
+  }
+  if (size > 72) {
+    size = 72;
+  }
+
+  return size;
+}
+
 function renderLocationItems() {
  //Render item markers on top of room image based on item screen coordinates.
   var roomLoad = document.getElementById('StartRoomLoad');
@@ -60,6 +75,9 @@ function renderLocationItems() {
     var marker = document.createElement('div');
     marker.className = 'room-item-hotspot';
     marker.style.position = 'absolute';
+    var markerSize = getRoomItemMarkerSize(surface);
+    marker.style.width = markerSize + 'px';
+    marker.style.height = markerSize + 'px';
     marker.style.left = (surfaceRect.left - roomRect.left + ((x / 100) * surfaceRect.width)) + 'px';
     marker.style.top = (surfaceRect.top - roomRect.top + ((y / 100) * surfaceRect.height)) + 'px';
     marker.style.transform = 'translate(-50%, -50%)';
