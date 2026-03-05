@@ -1,3 +1,17 @@
+function getRoomSurfaceElement() {
+  var bg = document.getElementById('RoomBackground');
+  if (bg) {
+    return bg;
+  }
+
+  var vid = document.getElementById('mainvid');
+  if (vid) {
+    return vid;
+  }
+
+  return null;
+}
+
 function renderLocationItems() {
  //Render item markers on top of room image based on item screen coordinates.
   var roomLoad = document.getElementById('StartRoomLoad');
@@ -35,11 +49,19 @@ function renderLocationItems() {
     var clickableRaw = item[ITEMCLICKABLE] ? item[ITEMCLICKABLE][1] : 'yes';
     var isClickable = String(clickableRaw).toLowerCase() !== 'no' && String(clickableRaw).toLowerCase() !== 'false' && String(clickableRaw) !== '0';
 
+    var surface = getRoomSurfaceElement();
+    if (!surface) {
+      continue;
+    }
+
+    var surfaceRect = surface.getBoundingClientRect();
+    var roomRect = roomLoad.getBoundingClientRect();
+
     var marker = document.createElement('div');
     marker.className = 'room-item-hotspot';
     marker.style.position = 'absolute';
-    marker.style.left = x + '%';
-    marker.style.top = y + '%';
+    marker.style.left = (surfaceRect.left - roomRect.left + ((x / 100) * surfaceRect.width)) + 'px';
+    marker.style.top = (surfaceRect.top - roomRect.top + ((y / 100) * surfaceRect.height)) + 'px';
     marker.style.transform = 'translate(-50%, -50%)';
     marker.title = uniqueName;
 
@@ -75,7 +97,7 @@ function LoadRoom(roomname) {
     document.getElementById('StartRoomLoad').innerHTML = '<video id="mainvid" onerror="hidevideo(OBJECTGLOBAL);" onended="hidevideo(OBJECTGLOBAL);" width="100%" height="" autoplay><source src="' + GameLocations[OBJECTGLOBAL][OBJECTMOVIE][1] + '" type="video/mp4"></video>';
   }
   else if (GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] !== '') {
-    document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+    document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' onload='renderLocationItems();' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
   }
 
   scrnDisplay(GameLocations[OBJECTGLOBAL][OBJECTDESCFIRSTTIME][1]);
@@ -90,7 +112,7 @@ function hidevideo(roomname) {
   }
 
   if (GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] !== '') {
-    document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
+    document.getElementById('StartRoomLoad').innerHTML = "<img src='" + GameLocations[OBJECTGLOBAL][OBJECTIMAGE][1] + "' id='RoomBackground' onload='renderLocationItems();' width='" + GameLocations[OBJECTGLOBAL][OBJECTXSIZE][1] + "' height='" + GameLocations[OBJECTGLOBAL][OBJECTYSIZE][1] + "'></image>";
   }
 
   renderLocationItems();
@@ -122,4 +144,14 @@ function changeObjectValue(object, field, value, pos = 1) {
   }
 
   return true;
+}
+
+
+if (!window.__roomItemResizeHooked) {
+  window.addEventListener('resize', function () {
+    if (typeof renderLocationItems === 'function') {
+      renderLocationItems();
+    }
+  });
+  window.__roomItemResizeHooked = true;
 }
